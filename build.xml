@@ -1,0 +1,149 @@
+<project name="Salesforce Sandbox Ant Tasks" default="help" basedir="."
+  xmlns:sf="antlib:com.salesforce">
+  <property name="dir.log" location="log"/>
+  <property name="dir.lib" location="lib"/>
+  <property name="dir.dev" location="dev"/>
+  <property name="dir.sandbox" location="sandbox"/>
+  <property name="dir.production" location="production"/>
+  <property file="build.properties"/>
+  <property file="default.properties"/>
+  <property file="library.properties"/>
+  <property name="lib.sf-ant.jar" location="${dir.lib}/${sf-ant.name}-${sf-ant.version}.jar"/>
+  <property name="lib.junit.jar" location="${dir.lib}/${junit.name}-${junit.version}.jar"/>
+  <property name="lib.hamcrest-core.jar" location="${dir.lib}/${hamcrest-core.name}-${hamcrest-core.version}.jar"/>
+
+  <taskdef resource="com/salesforce/antlib.xml" uri="antlib:com.salesforce">
+    <classpath>
+      <pathelement location="${lib.sf-ant.jar}"/>
+    </classpath>
+  </taskdef>
+
+  <path id="classpath.test">
+    <pathelement location="${lib.junit.jar}"/>
+    <pathelement location="${lib.hamcrest.jar}"/>
+    <pathelement location="${lib.main.build.dir}"/>
+  </path>
+
+  <target name="-init" depends="-setCredentials">
+    <tstamp>
+      <format property="tstamp" pattern="yyyyMMddhhmm" locale="en,US"/>
+    </tstamp>
+  </target>
+
+  <target name="-setCredentials">
+    <condition property="sf.username" value=""> <not> <isset property="sf.username"/> </not> </condition>
+    <condition property="sf.password" value=""> <not> <isset property="sf.password"/> </not> </condition>
+    <condition property="sf.sessionId" value=""> <not> <isset property="sf.sessionId"/> </not> </condition>
+  </target>
+
+  <target name="-logproperties">
+    <mkdir dir="${dir.log}"/>
+    <touch file="${dir.log}/my.properties"/>
+    <echoproperties destfile="${dir.log}/my.properties">
+      <propertyset>
+        <propertyref prefix="credentials."/>
+        <propertyref prefix="server."/>
+        <propertyref prefix="value."/>
+        <propertyref prefix="dir."/>
+        <propertyref prefix="lib."/>
+      </propertyset>
+    </echoproperties>
+  </target>
+
+  <target name="-printproperties" depends="-logproperties">
+    <loadfile property="myproperties" srcFile="${dir.log}/my.properties"/> 
+    <echo>${myproperties}</echo> 
+  </target>
+
+  <target name="help" description="List properties and targets" depends="-init">
+    <antcall target="-printproperties"/>
+    <java classname="org.apache.tools.ant.Main">
+      <arg value="-projecthelp" />
+      <arg value="-buildfile" />
+      <arg value="${ant.file}" />
+    </java>
+  </target>
+
+  <target name="clean" description="Destroy all generated files and dirs">
+    <delete file=".ant-targets-build.xml" quiet="true"/>
+  </target>
+
+  <macrodef name="describeMetadata">
+    <attribute name="src"/>
+    <sequential>
+      <touch file="${dir.log}/describe-@{src}.log"/>
+      <sf:describeMetadata username="${sf.username}" password="${sf.password}" sessionId="${sf.sessionId}" serverurl="${server.@{src}}"
+        resultFilePath="${dir.log}/describe-@{src}.log"/>
+    </sequential>
+  </macrodef>
+
+  <macrodef name="listMetadata">
+    <attribute name="src"/>
+    <attribute name="metadataType"/>
+    <sequential>
+      <touch file="${dir.log}/list-@{src}.log"/>
+      <sf:listMetadata username="${sf.username}" password="${sf.password}" sessionId="${sf.sessionId}" serverurl="${server.@{src}}"
+        resultFilePath="${dir.log}/list-@{src}.log" metadataType="@{metadataType}"/>
+    </sequential>
+  </macrodef>
+
+  <macrodef name="retrieve">
+    <attribute name="src"/>
+    <sequential>
+      <mkdir dir="@{src}/retrievePkg"/>
+      <sf:retrieve username="${sf.username}" password="${sf.password}" sessionId="${sf.sessionId}" serverurl="${server.@{src}}"
+        maxPoll="${server.maxPoll}" retrieveTarget="@{src}/retrievePkg" unpackaged="package.xml"/>
+    </sequential>
+  </macrodef>
+
+  <macrodef name="deploy">
+    <attribute name="deployRoot"/>
+    <attribute name="dest"/>
+    <sequential>
+      <sf:deploy username="${sf.username}" password="${sf.password}" sessionId="${sf.sessionId}" serverurl="${server.@{dest}}"
+        maxPoll="${server.maxPoll}" requestId="deploy-@{deployRoot}-@{dest}" deployRoot="@{deployRoot}" rollbackOnError="true" ignoreWarnings="false" testLevel="RunSpecifiedTests"/>
+    </sequential>
+  </macrodef>
+
+  <macrodef name="cancelDeploy">
+    <attribute name="deployRoot"/>
+    <attribute name="dest"/>
+    <sequential>
+      <sf:cancelDeploy  username="${sf.username}" password="${sf.password}" sessionId="${sf.sessionId}" serverurl="${server.@{dest}}"
+        maxPoll="${server.maxPoll}" requestId="deploy-@{deployRoot}-@{dest}"/>
+    </sequential>
+  </macrodef>
+
+  <target name="describeSandboxMetadata" depends="-init" description="">
+    <describeMetadata src="sandbox"/>
+  </target>
+
+  <target name="describeProductionMetadata" depends="-init" description="" >
+    <describeMetadata src="production"/>
+  </target>
+
+  <target name="listSandboxMetadata" depends="-init" description="Retrieve information on all items of a particular metadatatype" >
+    <listMetadata src="sandbox" metadataType="${value.metadataType}"/>
+  </target>
+
+  <target name="listProductionMetadata" depends="-init" description="">
+    <listMetadata src="production" metadataType="${value.metadataType}"/>
+  </target>
+
+  <target name="retrieveSandbox" depends="-init" description="">
+    <retrieve src="sandbox"/>
+  </target>
+
+  <target name="retrieveProduction" depends="-init" description="">
+    <retrieve src="production"/>
+  </target>
+
+  <target name="deployDevToSandbox" depends="-init" description="">
+    <deploy deployRoot="${dev}" dest="sandbox"/>
+  </target>
+
+  <target name="cancelDeployDevToSandbox" depends="-init" description="">
+    <cancelDeploy deployRoot="${dev}" dest="sandbox"/>
+  </target>
+
+</project>

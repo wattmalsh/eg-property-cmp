@@ -1,0 +1,3 @@
+<aura:event type="APPLICATION"> <!-- there are two types of events: COMPONENT and APPLICATION. a component event is where we want an ancestor ("above" the component in the hierarchy) component to catch and handle the event. use an application event for any component to receive the event -->
+  <aura:attribute name="string" type="STRING"/> <!-- an event's attribute describes the payload it can carry, the payload is set by the action handler with a call to setParams() -->
+</aura:event>

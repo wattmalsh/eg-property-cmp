@@ -1,0 +1,3 @@
+sf.username = <Insert your Salesforce username here>
+sf.password = <Insert your Salesforce password here>
+#sf.sessionId = <Insert your Salesforce session id here.  Use this or username/password above.  Cannot use both>
