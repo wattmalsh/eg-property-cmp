@@ -1,4 +1,8 @@
-log
-production
-sandbox
+logs
+sandbox/**/*
+production/**/*
+!**/*manifest.xml
+!**/*package.xml
+!**/destructiveChanges*xml
 build.properties
+.ant-targets-build.xml
