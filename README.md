@@ -32,22 +32,22 @@ cp undeploy/destructiveChanges.example.xml undeploy/destructiveChanges.xml
 
 ### Contents
 * **``lib``** - All Ant libraries required for targets. Includes Force.com
-  Migration Tool jar (**``ant-salesforce-41.0``**). Also, you can find example
+  Migration Tool jar (``ant-salesforce-41.0``). Also, you can find example
   files of Force.com Migration Tool usage for the corresponding version in those
   subdirectories.
 
 * **``logs``** - All log files are stored here.
 
 * **``deploy``** - Files in development for deployment to Salesforce org. The
-  **``package.xml``** is utilized for all ``deploy`` targets.
+  ``package.xml`` is utilized for all ``deploy`` targets.
 
 * **``retrieve``** - Files retrieved from ``retrieve`` target calls are placed
-  in the respective **``sandbox``** or **``production``** directory. Each org
+  in the respective ``sandbox`` or ``production`` directory. Each org
   has its own package.xml.
 
-* **``undeploy``** - A blank **``package.xml``** along with
-  a **``destructiveChanges.xml``** for files to undeploy. Backups of files found
-  in **``backup``**.
+* **``undeploy``** - A blank ``package.xml`` along with
+  a ``destructiveChanges.xml`` for files to undeploy. Backups of files found in
+  ``backup``.
 
 * **``build.properties.example``** - An example build.properties with private
   properties. Make a copy and add Salesforce credentials. Any properties to be
@@ -59,27 +59,38 @@ cp undeploy/destructiveChanges.example.xml undeploy/destructiveChanges.xml
 * **``library.properties``** - Library properties. Change versions of libraries
   by editing this file.
 
+* **``manifest.xml``** - Sample list of components used for retrieving
+  Salesforce metadata.
+
 ### Configurables
 List of configurable build properties from ``build.properties``.
+
 * **``sf.sandbox.username``** - Username (e.g. matt@energygeeks.com.eg) for the
   sandbox org you will be deploying to / retrieving from.
+
 * **``sf.sandbox.password``** - Password (+ security token) for the above login.
+
 * **``sf.production.username``** - Username (e.g. matt@energygeeks.com) for the
 production org you will be deploying to / retrieving from.
+
 * **``sf.production.password``** - Password (+ security token) for the above
   login.
+
 * **``sf.sandbox.sessionId``** - A sandbox org sessionId to be used in place of
   a username/password.
+
 * **``sf.production.sessionId``** - A production org sessionId to be used in
   place of a username/password.
+
 * **``server.maxPoll``** - The number of times to poll the server for the
   results of a retrieve request. (default: 200)
+
 * **``value.metadataType``** - The metadataType to retrieve for listMetadata
   targets. (default: AuraDefinitionBundle)
 
 Usage
 -----
-Run **``ant [target]``** from the base directory to utilize targets of the
+Run ``ant [target]`` from the base directory to utilize targets of the
 migration tool.
 
 ```
