@@ -10,5 +10,9 @@
     <members>expensesList</members>
     <name>AuraDefinitionBundle</name>
   </types>
+  <types>
+    <members>Expense__c</members>
+    <name>CustomObject</name>
+  </types>
   <version>41.0</version>
 </Package>
