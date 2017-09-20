@@ -22,12 +22,19 @@
   <property file="default.properties"/>
   <property file="library.properties"/>
   <property name="lib.sf-ant.jar" location="${dir.lib}/${sf-ant.name}-${sf-ant.version}.jar"/>
+  <property name="lib.ant-contrib.jar" location="${dir.lib}/${ant-contrib.name}-${ant-contrib.version}.jar"/>
   <property name="lib.junit.jar" location="${dir.lib}/${junit.name}-${junit.version}.jar"/>
   <property name="lib.hamcrest-core.jar" location="${dir.lib}/${hamcrest-core.name}-${hamcrest-core.version}.jar"/>
 
   <taskdef resource="com/salesforce/antlib.xml" uri="antlib:com.salesforce">
     <classpath>
       <pathelement location="${lib.sf-ant.jar}"/>
+    </classpath>
+  </taskdef>
+
+  <taskdef resource="net/sf/antcontrib/antcontrib.properties">
+    <classpath>
+      <pathelement location="${lib.ant-contrib.jar}"/>
     </classpath>
   </taskdef>
 
