@@ -1,9 +1,9 @@
 logs
 deploy/backup
+deploy/dev/package.xml
 retrieve/**/*
 undeploy/**/*
-!**/*manifest.xml
-!**/*package.xml
-!**/*destructiveChanges*xml
+!**/package.example.xml
+!**/destructiveChanges.example.xml
 build.properties
 .ant-targets-build.xml
