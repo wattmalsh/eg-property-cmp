@@ -18,8 +18,17 @@ Getting Started
 for details.
 
 ### Initialization
-* Copy **``build.properties.example``** to **``build.properties``**. Input your
-Salesforce.com userpass to **``sf.username``** and **``sf.password``**. Alternatively, input your sessionId in **``sf.sessionId``**.
+```sh
+cp deploy/dev/package.example.xml deploy/dev/package.xml
+cp retrieve/sandbox/package.example.xml retrieve/sandbox/package.xml
+cp retrieve/production/package.example.xml retrieve/production/package.xml
+cp undeploy/package.example.xml undeploy/package.xml
+cp undeploy/destructiveChanges.example.xml undeploy/destructiveChanges.xml
+```
+
+* In **``build.properties``**, input your Salesforce.com userpass to
+  **``sf.username``** and **``sf.password``**. Alternatively, input your
+  sessionId in **``sf.sessionId``**.
 
 ### Contents
 * **``lib``** - All Ant libraries required for targets. Includes Force.com
