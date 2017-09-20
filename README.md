@@ -30,23 +30,22 @@ Salesforce.com userpass to **``sf.username``** and **``sf.password``**. Alternat
 * **``logs``** - All log files are stored here.
 
 * **``deploy``** - Files in development for deployment to Salesforce org. The
-  **``package.xml``** is utilized for all ``deploy`` and ``retrieve`` commands.
+  **``package.xml``** is utilized for all ``deploy`` targets.
 
 * **``retrieve``** - Files retrieved from ``retrieve`` target calls are placed
-  in the repective **``sandbox``** or **``production``** directory. (note:
-  **``package.xml``** is symlinked with **``deploy/package.xml``**).
+  in the respective **``sandbox``** or **``production``** directory. Each org
+  has its own package.xml.
 
-* **``undeploy``** - Backup files of any undeploy commands. A blank
-  **``package.xml``** along with **``destructiveChanges.xml``**,
-  **``destructiveChangesPre.xml``** and **``destructiveChangesPost.xml``**.
-  (note: do not edit **``undeploy/package.xml``**).
+* **``undeploy``** - A blank **``package.xml``** along with
+  a **``destructiveChanges.xml``** for files to undeploy. Backups of files found
+  in **``backup``**.
 
 * **``build.properties.example``** - An example build.properties with private
-  properties to be copied and filled out with Salesforce ``username`` and
-  ``password``. Any properties to be modified or added go here.
+  properties. Make a copy and add Salesforce credentials. Any properties to be
+  modified or added go here.
 
-* **``default.properties``** - Default properties. Override any property in
-  **``build.properties``**.
+* **``default.properties``** - Default properties. (note: do not modify this
+  file)
 
 * **``library.properties``** - Library properties. Change versions of libraries
   by editing this file.
