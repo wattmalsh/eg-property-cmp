@@ -1,23 +1,21 @@
 <project name="Salesforce Sandbox Ant Tasks" default="help" basedir="."
   xmlns:sf="antlib:com.salesforce">
+
   <property name="dir.logs" location="logs"/>
   <property name="dir.lib" location="lib"/>
-  <property name="dir.deploy" location="deploy"/>
+  <property name="dir.deploy.dev" location="deploy.dev"/>
   <property name="dir.deploy.backup.sandbox" location="deploy/backup/sandbox"/>
   <property name="dir.deploy.backup.production" location="deploy/backup/production"/>
   <property name="dir.retrieve" location="retrieve"/>
   <property name="dir.retrieve.sandbox" location="retrieve/sandbox"/>
   <property name="dir.retrieve.production" location="retrieve/production"/>
-  <property name="dir.undeploy" location="deploy"/>
-  <property name="dir.undeploy.backup.sandbox" location="deploy"/>
-  <property name="dir.undeploy.backup.production" location="production"/>
+  <property name="dir.undeploy" location="undeploy"/>
+  <property name="dir.undeploy.backup.sandbox" location="undeploy/backup/sandbox"/>
+  <property name="dir.undeploy.backup.production" location="undeploy/backup/production"/>
   <property name="file.pkg" location="package.xml"/>
-  <property name="file.deploy.pkg" location="deploy/package.xml"/>
+  <property name="file.deploy.dev.pkg" location="deploy/dev/package.xml"/>
   <property name="file.retrieve.sandbox.pkg" location="retrieve/sandbox/package.xml"/>
   <property name="file.retrieve.production.pkg" location="retrieve/production/package.xml"/>
-  <property name="file.undeploy.destuctive-changes" location="undeploy/production/destructiveChanges.xml"/>
-  <property name="file.undeploy.destuctive-changes-pre" location="undeploy/production/destructiveChangesPre.xml"/>
-  <property name="file.undeploy.destuctive-changes-post" location="undeploy/production/destructiveChangesPost.xml"/>
   <property file="build.properties"/>
   <property file="default.properties"/>
   <property file="library.properties"/>
@@ -44,35 +42,50 @@
     <pathelement location="${lib.main.build.dir}"/>
   </path>
 
-  <target name="-init" depends="-setCredentials,-syncPackageXmls">
+  <target name="-init" depends="-setDestructiveChangesXml">
     <mkdir dir="${dir.logs}"/>
     <tstamp>
       <format property="tstamp" pattern="yyyyMMddhhmm" locale="en,US"/>
     </tstamp>
   </target>
 
-  <target name="-closeout" depends="-resetPackageXmls">
-    <delete>
-      <fileset dir="." includes="**/*.ant-targets-build.xml" quiet="true"/>
-    </delete>
-  </target>
+  <macrodef name="setCredentials">
+    <attribute name="org" default="sandbox"/>
+    <sequential>
+      <condition property="sf.@{org}.username" value=""> <not><isset property="sf.@{org}.username"/></not></condition>
+      <condition property="sf.@{org}.password" value=""> <not><isset property="sf.@{org}.password"/></not></condition>
+      <condition property="sf.@{org}.sessionId" value=""> <not><isset property="sf.@{org}.sessionId"/></not></condition>
+      <condition property="sf.username" value="${sf.sandbox.username}" else="${sf.production.username}">
+        <equals arg1="@{org}" arg2="sandbox"/>
+      </condition>
+      <condition property="sf.password" value="${sf.sandbox.password}" else="${sf.production.password}">
+        <equals arg1="@{org}" arg2="sandbox"/>
+      </condition>
+      <condition property="sf.sessionId" value="${sf.sandbox.sessionId}" else="${sf.production.sessionId}">
+        <equals arg1="@{org}" arg2="sandbox"/>
+      </condition>
+    </sequential>
+  </macrodef>
 
-  <target name="-setCredentials">
-    <condition property="sf.username" value=""> <not> <isset property="sf.username"/> </not> </condition>
-    <condition property="sf.password" value=""> <not> <isset property="sf.password"/> </not> </condition>
-    <condition property="sf.sessionId" value=""> <not> <isset property="sf.sessionId"/> </not> </condition>
-  </target>
-
-  <target name="-syncPackageXmls">
-    <move file="${file.retrieve.sandbox.pkg}" tofile="${file.retrieve.sandbox.pkg}-copy" preservelastmodified="true" overwrite="true"/>
-    <move file="${file.retrieve.production.pkg}" tofile="${file.retrieve.production.pkg}-copy" preservelastmodified="true" overwrite="true"/>
-    <copy file="${file.deploy.pkg}" tofile="{file.retrieve.sandbox.pkg}" preservelastmodified="true" overwrite="true"/>
-    <copy file="${file.deploy.pkg}" tofile="{file.retrieve.production.pkg}" preservelastmodified="true" overwrite="true"/>
-  </target>
-
-  <target name="-resetPackageXmls">
-    <move file="${file.retrieve.sandbox.pkg}-copy" tofile="${file.retrieve.sandbox.pkg}" preservelastmodified="true" overwrite="true"/>
-    <move file="${file.retrieve.production.pkg}-copy" tofile="${file.retrieve.production.pkg}" preservelastmodified="true" overwrite="true"/>
+  <target name="-setDestructiveChangesXml">
+    <if>
+      <available file="undeploy/destructiveChanges.xml"/>
+      <then>
+        <property name="file.undeploy.destructive-changes" location="undeploy/destructiveChanges.xml"/>
+      </then>
+      <elseif>
+        <available file="undeploy/destructiveChangesPre.xml"/>
+        <then>
+          <property name="file.undeploy.destructive-changes" location="undeploy/destructiveChangesPre.xml"/>
+        </then>
+      </elseif>
+      <else>
+        <available file="undeploy/destructiveChangesPost.xml"/>
+        <then>
+          <property name="file.undeploy.destructive-changes" location="undeploy/destructiveChangesPost.xml"/>
+        </then>
+      </else>
+    </if>
   </target>
 
   <target name="-logproperties">
@@ -93,7 +106,7 @@
     <echo>${myproperties}</echo> 
   </target>
 
-  <macrodef name="-getRequestId">
+  <macrodef name="getRequestId">
     <attribute name="srcFile"/>
     <sequential>
       <loadfile srcFile="@{srcFile}" property="dev.deploy.requestId">
@@ -108,8 +121,8 @@
     </sequential>
   </macrodef>
 
-  <target name="-logRequestId" depends="-setRequestIdFromDeployLog">
-    <-getRequestId srcFile="${dir.logs}/deploylog.txt"/>
+  <target name="-logRequestId">
+    <getRequestId srcFile="${dir.logs}/deploylog.txt"/>
   <echo file="${dir.logs}/request-ids.txt" append="true"
     message="${line.separator}${tstamp}: ${dev.deploy.root}=>${dev.deploy.serverurl}  ${dev.deploy.requestId}"/>
 </target>
@@ -139,7 +152,7 @@
 
   <target name="clean" description="Destroy all generated files and dirs">
     <delete>
-      <fileset dir="." includes="**/*.ant-targets-build.xml" quiet="true"/>
+      <fileset dir="." includes="**/*.ant-targets-build.xml"/>
     </delete>
     <delete includeemptydirs="true">
       <fileset dir="${dir.deploy.backup}" includes="**/*" erroronmissingdir="false"/>
@@ -153,6 +166,7 @@
     <attribute name="org" default="sandbox"/>
     <attribute name="serverurl" default="${server.sandbox}"/>
     <sequential>
+      <setCredentials org="@{org}"/>
       <touch file="${dir.logs}/describe-@{org}.log"/>
       <sf:describeMetadata username="${sf.username}" password="${sf.password}" sessionId="${sf.sessionId}" serverurl="@{serverurl}"
         resultFilePath="${dir.logs}/describe-@{org}.log"/>
@@ -162,8 +176,9 @@
   <macrodef name="listMetadata">
     <attribute name="org" default="sandbox"/>
     <attribute name="serverurl" default="${server.sandbox}"/>
-    <attribute name="metadataType"/ defaults="AuraDefinitionBundle">
+    <attribute name="metadataType" default="AuraDefinitionBundle"/>
     <sequential>
+      <setCredentials org="@{org}"/>
       <touch file="${dir.logs}/list-@{org}.log"/>
       <sf:listMetadata username="${sf.username}" password="${sf.password}" sessionId="${sf.sessionId}" serverurl="@{serverurl}"
         resultFilePath="${dir.logs}/list-@{org}.log" metadataType="@{metadataType}"/>
@@ -176,8 +191,9 @@
     <attribute name="retrieveTarget" default="${dir.retrieve.sandbox}"/>
     <attribute name="pkg" default="${file.retrieve.sandbox.pkg}"/>
     <sequential>
+      <setCredentials org="@{org}"/>
       <delete includeemptydirs="true">
-        <fileset dir="@{retrieveTarget}" erroronmissingdir="false"/>
+        <fileset dir="@{retrieveTarget}" excludes="package.xml" erroronmissingdir="false"/>
       </delete>
       <mkdir dir="@{retrieveTarget}"/>
       <sf:retrieve username="${sf.username}" password="${sf.password}" sessionId="${sf.sessionId}" serverurl="@{serverurl}"
@@ -188,26 +204,12 @@
   <macrodef name="deploy">
     <attribute name="org" default="sandbox"/>
     <attribute name="serverurl" default="${server.sandbox}"/>
-    <attribute name="deployRoot" default="${dir.deploy}"/>
+    <attribute name="deployRoot" default="${dir.deploy.dev}"/>
     <attribute name="backupRoot" default="${dir.deploy.backup.sandbox}"/>
+    <attribute name="pkg" default="${file.deploy.dev.pkg}"/>
     <sequential>
-      <if>
-        <equals arg1="@{deployRoot}" arg2="${dir.deploy}"/>
-        <then>
-          <retrieve org="@{org}" serverurl="@{serverurl}" retrieveTarget="@{backupRoot}" pkg="${file.deploy.pkg}"/>
-        </then>
-        <elseif>
-          <equals arg1="@{deployRoot}" arg2="${dir.undeploy}"/>
-          <then>
-            <retrieve org="@{org}" serverurl="@{serverurl}" retrieveTarget="@{backupRoot}" pkg="${file.undeploy.destructive-changes}"/>
-            <retrieve org="@{org}" serverurl="@{serverurl}" retrieveTarget="@{backupRoot}" pkg="${file.undeploy.destructive-changes-pre}"/>
-            <retrieve org="@{org}" serverurl="@{serverurl}" retrieveTarget="@{backupRoot}" pkg="${file.undeploy.destructive-changes-post}"/>
-          </then>
-        </elseif>
-        <else>
-          <fail message="Must deploy from a deployRoot directory of 'deploy' or 'undeploy'."/>
-        </else>
-      </if>
+      <setCredentials org="@{org}"/>
+      <retrieve org="@{org}" serverurl="@{serverurl}" retrieveTarget="@{backupRoot}" pkg="@{pkg}"/>
       <record name="${dir.logs}/deploylog.txt" action="start"/>
       <sf:deploy username="${sf.username}" password="${sf.password}" sessionId="${sf.sessionId}" serverurl="@{serverurl}"
         maxPoll="${server.maxPoll}" deployRoot="@{deployRoot}" rollbackOnError="true" ignoreWarnings="false"/>
@@ -220,8 +222,9 @@
 
   <macrodef name="cancelDeploy">
     <sequential>
-      <-getRequestId srcFile="${dir.logs}/request-ids.txt"/>
+      <getRequestId srcFile="${dir.logs}/request-ids.txt"/>
       <antcall target="-setDeployServerurl"/>
+      <setCredentials org="#TODO"/>
       <sf:cancelDeploy  username="${sf.username}" password="${sf.password}" sessionId="${sf.sessionId}" serverurl="${dev.deploy.serverurl}"
         maxPoll="${server.maxPoll}" requestId="${dev.deploy.requestId}"/>
     </sequential>
@@ -229,57 +232,46 @@
 
   <target name="describeSandboxMetadata" depends="-init" description="">
     <describeMetadata org="sandbox" serverurl="${server.sandbox}"/>
-    <antcall target="-closeout"/>
   </target>
 
   <target name="describeProductionMetadata" depends="-init" description="" >
     <describeMetadata org="production" serverurl="${server.production}"/>
-    <antcall target="-closeout"/>
   </target>
 
   <target name="listSandboxMetadata" depends="-init" description="Retrieve information on all items of a particular metadatatype" >
     <listMetadata org="sandbox" serverurl="${server.sandbox}" metadataType="${value.metadataType}"/>
-    <antcall target="-closeout"/>
   </target>
 
   <target name="listProductionMetadata" depends="-init" description="">
     <listMetadata org="production" serverurl="${server.production}" metadataType="${value.metadataType}"/>
-    <antcall target="-closeout"/>
   </target>
 
   <target name="retrieveSandbox" depends="-init" description="">
     <retrieve org="sandbox" serverurl="${server.sandbox}" retrieveTarget="${dir.retrieve.sandbox}" pkg="${file.retrieve.sandbox.pkg}"/>
-    <antcall target="-closeout"/>
   </target>
 
   <target name="retrieveProduction" depends="-init" description="">
     <retrieve org="production" serverurl="${server.production}" retrieveTarget="${dir.retrieve.production}" pkg="${file.retrieve.production.pkg}"/>
-    <antcall target="-closeout"/>
   </target>
 
   <target name="deployToSandbox" depends="-init" description="">
-    <deploy org="sandbox" serverurl="${server.sandbox}" deployRoot="${dir.deploy}" backupRoot="${dir.deploy.backup.sandbox}"/>
-    <antcall target="-closeout"/>
+    <deploy org="sandbox" serverurl="${server.sandbox}" deployRoot="${dir.deploy.dev}" backupRoot="${dir.deploy.backup.sandbox}" pkg="${deploy.pkg}"/>
   </target>
 
   <target name="deployToProduction" depends="-init" description="">
-    <deploy org="production" serverurl="${server.production}" deployRoot="${dir.deploy}" backupRoot="${dir.deploy.backup.production}"/>
-    <antcall target="-closeout"/>
+    <deploy org="production" serverurl="${server.production}" deployRoot="${dir.deploy.dev}" backupRoot="${dir.deploy.backup.production}" pkg="${deploy.pkg}"/>
   </target>
 
   <target name="undeployFromSandbox" depends="-init" description="">
-    <deploy org="sandbox" serverurl="${server.sandbox}" deployRoot="${dir.undeploy}" backupRoot="${dir.undeploy.backup.sandbox}"/>
-    <antcall target="-closeout"/>
+    <deploy org="sandbox" serverurl="${server.sandbox}" deployRoot="${dir.undeploy}" backupRoot="${dir.undeploy.backup.sandbox}" pkg="${file.undeploy.destructive-changes}"/>
   </target>
 
   <target name="undeployFromProduction" depends="-init" description="">
-    <deploy org="production" serverurl="${server.production}" deployRoot="${dir.undeploy}" backupRoot="${dir.undeploy.backup.production}"/>
-    <antcall target="-closeout"/>
+    <deploy org="production" serverurl="${server.production}" deployRoot="${dir.undeploy}" backupRoot="${dir.undeploy.backup.production}" pkg="${file.undeploy.destructive-changes}"/>
   </target>
 
   <target name="cancelLastDeploy" depends="-init" description="">
     <cancelDeploy/>
-    <antcall target="-closeout"/>
   </target>
 
 </project>
