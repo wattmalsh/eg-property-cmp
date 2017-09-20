@@ -1,8 +1,9 @@
 logs
-sandbox/**/*
-production/**/*
+deploy/backup
+retrieve/**/*
+undeploy/**/*
 !**/*manifest.xml
 !**/*package.xml
-!**/destructiveChanges*xml
+!**/*destructiveChanges*xml
 build.properties
 .ant-targets-build.xml
