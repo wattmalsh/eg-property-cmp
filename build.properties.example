@@ -1,3 +1,8 @@
-sf.username = <Insert your Salesforce username here>
-sf.password = <Insert your Salesforce password here>
-#sf.sessionId = <Insert your Salesforce session id here.  Use this or username/password above.  Cannot use both>
+sf.sandbox.username = <Insert your Salesforce username here>
+sf.sandbox.password = <Insert your Salesforce password here>
+# sf.sandbox.sessionId = <Insert your Salesforce session id here.  Use this or username/password above.  Cannot use both>
+sf.production.username = <Insert your Salesforce username here>
+sf.production.password = <Insert your Salesforce password here>
+# sf.production.sessionId = <Insert your Salesforce session id here.  Use this or username/password above.  Cannot use both>
+# server.maxPoll
+# value.metadataType
