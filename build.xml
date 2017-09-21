@@ -3,16 +3,14 @@
 
   <property name="dir.logs" location="logs"/>
   <property name="dir.lib" location="lib"/>
-  <property name="dir.deploy.dev" location="deploy.dev"/>
-  <property name="dir.deploy.backup.sandbox" location="deploy/backup/sandbox"/>
-  <property name="dir.deploy.backup.production" location="deploy/backup/production"/>
+  <property name="dir.deploy.dev" location="deploy/dev"/>
+  <property name="dir.deploy.backup" location="deploy/backup"/>
   <property name="dir.retrieve" location="retrieve"/>
   <property name="dir.retrieve.sandbox" location="retrieve/sandbox"/>
   <property name="dir.retrieve.production" location="retrieve/production"/>
   <property name="dir.undeploy" location="undeploy"/>
-  <property name="dir.undeploy.backup.sandbox" location="undeploy/backup/sandbox"/>
-  <property name="dir.undeploy.backup.production" location="undeploy/backup/production"/>
-  <property name="file.pkg" location="package.xml"/>
+  <property name="dir.undeploy.backup" location="undeploy/backup"/>
+  <property name="file.manifest" location="manifest.xml"/>
   <property name="file.deploy.dev.pkg" location="deploy/dev/package.xml"/>
   <property name="file.retrieve.sandbox.pkg" location="retrieve/sandbox/package.xml"/>
   <property name="file.retrieve.production.pkg" location="retrieve/production/package.xml"/>
@@ -89,7 +87,7 @@
   </target>
 
   <target name="-logproperties">
-    <touch file="${dir.logs}/my.properties"/>
+    <touch file="${dir.logs}/my.properties" mkdirs="true"/>
     <echoproperties destfile="${dir.logs}/my.properties">
       <propertyset>
         <propertyref prefix="sf."/>
@@ -156,8 +154,8 @@
     </delete>
     <delete includeemptydirs="true">
       <fileset dir="${dir.deploy.backup}" includes="**/*" erroronmissingdir="false"/>
-      <fileset dir="${dir.retrieve}" excludes="package.xml" erroronmissingdir="false"/>
-      <fileset dir="${dir.undeploy}" excludes="*.xml" erroronmissingdir="false"/>
+      <fileset dir="${dir.retrieve}" excludes="**/*.xml" erroronmissingdir="false"/>
+      <fileset dir="${dir.undeploy}" excludes="**/*.xml" erroronmissingdir="false"/>
       <fileset dir="${dir.logs}" erroronmissingdir="false"/>
     </delete>
   </target>
@@ -167,7 +165,7 @@
     <attribute name="serverurl"/><!-- ${server.sandbox} -->
     <sequential>
       <setCredentials org="@{org}"/>
-      <touch file="${dir.logs}/describe-@{org}.log"/>
+      <touch file="${dir.logs}/describe-@{org}.log" mkdirs="true"/>
       <sf:describeMetadata username="${sf.username}" password="${sf.password}" sessionId="${sf.sessionId}" serverurl="@{serverurl}"
         resultFilePath="${dir.logs}/describe-@{org}.log"/>
     </sequential>
@@ -179,7 +177,7 @@
     <attribute name="metadataType"/><!-- ${value.metadataType} -->
     <sequential>
       <setCredentials org="@{org}"/>
-      <touch file="${dir.logs}/list-@{org}.log"/>
+      <touch file="${dir.logs}/list-@{org}.log" mkdirs="true"/>
       <sf:listMetadata username="${sf.username}" password="${sf.password}" sessionId="${sf.sessionId}" serverurl="@{serverurl}"
         resultFilePath="${dir.logs}/list-@{org}.log" metadataType="@{metadataType}"/>
     </sequential>
@@ -188,16 +186,13 @@
   <macrodef name="retrieve">
     <attribute name="org"/><!-- sandbox -->
     <attribute name="serverurl"/><!-- ${server.sandbox} -->
-    <attribute name="retrieveTarget"/><!-- ${dir.retrieve.sandbox} -->
+    <attribute name="retrieveTargetBase"/><!-- ${dir.retrieve.sandbox} -->
     <attribute name="pkg"/><!-- ${file.retrieve.sandbox.pkg} -->
     <sequential>
       <setCredentials org="@{org}"/>
-      <delete includeemptydirs="true">
-        <fileset dir="@{retrieveTarget}" excludes="package.xml" erroronmissingdir="false"/>
-      </delete>
-      <mkdir dir="@{retrieveTarget}"/>
+      <mkdir dir="@{retrieveTargetBase}/@{org}-${tstamp}"/>
       <sf:retrieve username="${sf.username}" password="${sf.password}" sessionId="${sf.sessionId}" serverurl="@{serverurl}"
-        maxPoll="${server.maxPoll}" retrieveTarget="@{retrieveTarget}" unpackaged="@{pkg}"/>
+        maxPoll="${server.maxPoll}" retrieveTarget="@{retrieveTargetBase}/@{org}-${tstamp}" unpackaged="@{pkg}"/>
     </sequential>
   </macrodef>
 
@@ -205,11 +200,11 @@
     <attribute name="org"/><!-- sandbox -->
     <attribute name="serverurl"/><!-- ${server.sandbox} -->
     <attribute name="deployRoot"/><!-- ${dir.deploy.dev} -->
-    <attribute name="backupRoot"/><!-- ${dir.deploy.backup.sandbox} -->
     <attribute name="pkg"/><!-- ${file.deploy.dev.pkg} -->
     <sequential>
       <setCredentials org="@{org}"/>
-      <retrieve org="@{org}" serverurl="@{serverurl}" retrieveTarget="@{backupRoot}" pkg="@{pkg}"/>
+      <mkdir dir="${dir.deploy.backup}/@{org}-${tstamp}"/>
+      <retrieve org="@{org}" serverurl="@{serverurl}" retrieveTargetBase="${dir.deploy.backup}" pkg="@{pkg}"/>
       <record name="${dir.logs}/deploylog.txt" action="start"/>
       <sf:deploy username="${sf.username}" password="${sf.password}" sessionId="${sf.sessionId}" serverurl="@{serverurl}"
         maxPoll="${server.maxPoll}" deployRoot="@{deployRoot}" rollbackOnError="true" ignoreWarnings="false"/>
@@ -247,19 +242,19 @@
   </target>
 
   <target name="retrieveSandbox" depends="-init" description="">
-    <retrieve org="sandbox" serverurl="${server.sandbox}" retrieveTarget="${dir.retrieve.sandbox}" pkg="${file.retrieve.sandbox.pkg}"/>
+    <retrieve org="sandbox" serverurl="${server.sandbox}" retrieveTargetBase="${dir.retrieve.sandbox}" pkg="${file.retrieve.sandbox.pkg}"/>
   </target>
 
   <target name="retrieveProduction" depends="-init" description="">
-    <retrieve org="production" serverurl="${server.production}" retrieveTarget="${dir.retrieve.production}" pkg="${file.retrieve.production.pkg}"/>
+    <retrieve org="production" serverurl="${server.production}" retrieveTargetBase="${dir.retrieve.production}" pkg="${file.retrieve.production.pkg}"/>
   </target>
 
   <target name="deployToSandbox" depends="-init" description="">
-    <deploy org="sandbox" serverurl="${server.sandbox}" deployRoot="${dir.deploy.dev}" backupRoot="${dir.deploy.backup.sandbox}" pkg="${deploy.pkg}"/>
+    <deploy org="sandbox" serverurl="${server.sandbox}" deployRoot="${dir.deploy.dev}" pkg="${file.deploy.dev.pkg}"/>
   </target>
 
   <target name="deployToProduction" depends="-init" description="">
-    <deploy org="production" serverurl="${server.production}" deployRoot="${dir.deploy.dev}" backupRoot="${dir.deploy.backup.production}" pkg="${deploy.pkg}"/>
+    <deploy org="production" serverurl="${server.production}" deployRoot="${dir.deploy.dev}" pkg="${file.deploy.dev.pkg}"/>
   </target>
 
   <target name="undeployFromSandbox" depends="-init" description="">
