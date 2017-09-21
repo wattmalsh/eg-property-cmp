@@ -2,20 +2,21 @@ Energy Geeks Salesforce.com
 ===========================
 
 Salesforce.com deployment structure utilizing
-[Apache Ant](http://ant.apache.org/) and the
-[Force.com Migration Tool](https://developer.salesforce.com/page/Force.com_Migration_Tool).
+[Apache Ant](http://ant.apache.org/),
+[Force.com Migration Tool](https://developer.salesforce.com/page/Force.com_Migration_Tool) and the
+[Force.com CLI](https://github.com/heroku/force).
 
 This structure includes a build file with targets to interact with Migration
 Tool targets. Targets are grouped into 3 categories: ``deploy``, ``retrieve``
 and ``undeploy``. Target names specify which Salesforce organization (``sandbox`` or
 ``production``) server to utlize.
 
-Getting Started
----------------
+Force.com Migration Tool
+------------------------
 
 ### System Requirements
-* **Apache Ant** - See [Installing Apache Ant](http://ant.apache.org/manual/install.html)
-for details.
+* **Apache Ant** - See [Installing Apache
+  Ant](http://ant.apache.org/manual/install.html) for details.
 
 ### Initialization
 ```sh
@@ -111,5 +112,19 @@ migration tool.
       undeployFromSandbox            delete contents of destructiveChanges.xml in Sandbox
       undeployFromProduction         delete contents of destructiveChanges.xml in Production
       cancelLastDeploy               cancel last deploy target
+```
+
+Force.com CLI
+-------------
+
+### System Requirements
+* Force.com CLI -- See [github.com/heroku/force](https://github.com/heroku/force)
+  for details
+
+### Initialization
+```sh
+force login i=test  # sandbox
+force login i=login # production
+force logins        # display all logins
 ```
 
