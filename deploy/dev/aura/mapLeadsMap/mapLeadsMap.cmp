@@ -1,0 +1,5 @@
+<aura:component>
+  <div class="slds-grid" style="height: 100px;">
+    <div style="background-color: red; height: 100%; width: 100%"></div>
+  </div>
+</aura:component>
