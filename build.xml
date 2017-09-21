@@ -164,16 +164,31 @@
   </target>
 
   <target name="clean" description="Destroy all generated files and dirs">
-    <delete>
-      <fileset dir="." includes="**/*.ant-targets-build.xml"/>
-    </delete>
     <delete includeemptydirs="true">
+      <fileset dir="." includes="**/.ant-targets-build.xml"/>
       <fileset dir="." includes="backup*/*" erroronmissingdir="false"/>
-      <fileset dir="${dir.retrieve}" excludes="**/*.xml" erroronmissingdir="false"/>
-      <fileset dir="${dir.undeploy}" excludes="**/*.xml" erroronmissingdir="false"/>
+      <fileset dir="${dir.retrieve}" excludes="*.xml" erroronmissingdir="false"/>
+      <fileset dir="${dir.undeploy}" excludes="*.xml" erroronmissingdir="false"/>
       <fileset dir="${dir.logs}" erroronmissingdir="false"/>
     </delete>
+    <deleteEmptyDirectories dir="."/>
+    <deleteEmptyDirectories dir="${dir.retrieve}"/>
+    <deleteEmptyDirectories dir="${dir.undeploy}"/>
   </target>
+
+  <macrodef name="deleteEmptyDirectories">
+    <attribute name="dir"/>
+      <sequential>
+          <delete includeemptydirs="true">
+            <fileset dir="@{dir}"  >
+                  <and>
+                      <size value="0"/>
+                      <type type="dir"/>
+                  </and>
+              </fileset>
+          </delete>
+      </sequential>
+  </macrodef>
 
   <target name="-describeMetadata">
     <touch file="${dir.logs}/describe-${server.org}.log" mkdirs="true"/>
