@@ -1,6 +1,6 @@
 logs
-deploy/backup
-deploy/dev/package.xml
+backup
+deploy/package.xml
 retrieve/**/*
 undeploy/**/*
 !**/package.example.xml

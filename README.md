@@ -21,8 +21,7 @@ Force.com Migration Tool
 ### Initialization
 ```sh
 cp deploy/dev/package.example.xml deploy/dev/package.xml
-cp retrieve/sandbox/package.example.xml retrieve/sandbox/package.xml
-cp retrieve/production/package.example.xml retrieve/production/package.xml
+cp retrieve/package.example.xml retrieve/package.xml
 cp undeploy/package.example.xml undeploy/package.xml
 cp undeploy/destructiveChanges.example.xml undeploy/destructiveChanges.xml
 ```
