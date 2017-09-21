@@ -50,7 +50,7 @@
   </target>
 
   <macrodef name="setCredentials">
-    <attribute name="org" default="sandbox"/>
+    <attribute name="org"/><!-- sandbox -->
     <sequential>
       <condition property="sf.@{org}.username" value=""> <not><isset property="sf.@{org}.username"/></not></condition>
       <condition property="sf.@{org}.password" value=""> <not><isset property="sf.@{org}.password"/></not></condition>
@@ -107,7 +107,7 @@
   </target>
 
   <macrodef name="getRequestId">
-    <attribute name="srcFile"/>
+    <attribute name="srcFile"/><!-- ${dir.logs}/deploylog.txt -->
     <sequential>
       <loadfile srcFile="@{srcFile}" property="dev.deploy.requestId">
         <filterchain>
@@ -163,8 +163,8 @@
   </target>
 
   <macrodef name="describeMetadata">
-    <attribute name="org" default="sandbox"/>
-    <attribute name="serverurl" default="${server.sandbox}"/>
+    <attribute name="org"/><!-- sandbox -->
+    <attribute name="serverurl"/><!-- ${server.sandbox} -->
     <sequential>
       <setCredentials org="@{org}"/>
       <touch file="${dir.logs}/describe-@{org}.log"/>
@@ -174,9 +174,9 @@
   </macrodef>
 
   <macrodef name="listMetadata">
-    <attribute name="org" default="sandbox"/>
-    <attribute name="serverurl" default="${server.sandbox}"/>
-    <attribute name="metadataType" default="AuraDefinitionBundle"/>
+    <attribute name="org"/><!-- sandbox -->
+    <attribute name="serverurl"/><!-- ${server.sandbox} -->
+    <attribute name="metadataType"/><!-- ${value.metadataType} -->
     <sequential>
       <setCredentials org="@{org}"/>
       <touch file="${dir.logs}/list-@{org}.log"/>
@@ -186,10 +186,10 @@
   </macrodef>
 
   <macrodef name="retrieve">
-    <attribute name="org" default="sandbox"/>
-    <attribute name="serverurl" default="${server.sandbox}"/>
-    <attribute name="retrieveTarget" default="${dir.retrieve.sandbox}"/>
-    <attribute name="pkg" default="${file.retrieve.sandbox.pkg}"/>
+    <attribute name="org"/><!-- sandbox -->
+    <attribute name="serverurl"/><!-- ${server.sandbox} -->
+    <attribute name="retrieveTarget"/><!-- ${dir.retrieve.sandbox} -->
+    <attribute name="pkg"/><!-- ${file.retrieve.sandbox.pkg} -->
     <sequential>
       <setCredentials org="@{org}"/>
       <delete includeemptydirs="true">
@@ -202,11 +202,11 @@
   </macrodef>
 
   <macrodef name="deploy">
-    <attribute name="org" default="sandbox"/>
-    <attribute name="serverurl" default="${server.sandbox}"/>
-    <attribute name="deployRoot" default="${dir.deploy.dev}"/>
-    <attribute name="backupRoot" default="${dir.deploy.backup.sandbox}"/>
-    <attribute name="pkg" default="${file.deploy.dev.pkg}"/>
+    <attribute name="org"/><!-- sandbox -->
+    <attribute name="serverurl"/><!-- ${server.sandbox} -->
+    <attribute name="deployRoot"/><!-- ${dir.deploy.dev} -->
+    <attribute name="backupRoot"/><!-- ${dir.deploy.backup.sandbox} -->
+    <attribute name="pkg"/><!-- ${file.deploy.dev.pkg} -->
     <sequential>
       <setCredentials org="@{org}"/>
       <retrieve org="@{org}" serverurl="@{serverurl}" retrieveTarget="@{backupRoot}" pkg="@{pkg}"/>
