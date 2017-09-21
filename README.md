@@ -49,9 +49,8 @@ cp undeploy/destructiveChanges.example.xml undeploy/destructiveChanges.xml
   a ``destructiveChanges.xml`` for files to undeploy. Backups of files found in
   ``backup``.
 
-* **``build.properties.example``** - An example build.properties with private
-  properties. Make a copy and add Salesforce credentials. Any properties to be
-  modified or added go here.
+* **``build.properties``** - Sets properties to be modified or added. Also
+  includes private properties.
 
 * **``default.properties``** - Default properties. (note: do not modify this
   file)
