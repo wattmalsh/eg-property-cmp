@@ -1,0 +1,190 @@
+<apex:page showHeader="false">
+  <html>
+    <head>
+      <style>
+        html { height: 100%; }
+        body { height: 100%; margin: 0; padding: 0 }
+        #map { height: 100%; }
+      </style>
+    </head>
+    <body>
+      <div id="map"/>
+      <script src="https://maps.googleapis.com/maps/api/js?callback=initMap" async="true" defer="true"></script>
+      <script>
+
+        // dummy lead
+        let lead = {
+          name: 'Marcus Joo',
+          latLng: { lat: 43.646335, lng: -79.530037 },
+        };
+
+        // the origin (protocol + port + host) lightning components are loaded from. this is where we expect messages to come from
+        let lexOrigin = 'https://{!$Currentpage.parameters.lcHost}';
+
+        // map and marker variables
+        let mapEl = document.getElementById('map'),
+            map,
+            mapOptions = {
+              zoom: 20,
+              gestureHandling: 'greedy',
+              mapTypeId: google.maps.MapTypeId.HYBRID,
+              mapTypeControl: true,
+              mapTypeControlOptions: {
+                style: google.maps.MapTypeControlStyle.HORIZONTAL_BAR,
+                position: google.maps.ControlPosition.TOP_CENTER
+              },
+              zoomControl: true,
+              zoomControlOptions: {
+                position: google.maps.ControlPosition.RIGHT_CENTER
+              },
+              scaleControl: true,
+              streetViewControl: true,
+              streetViewControlOptions: {
+                position: google.maps.ControlPosition.LEFT_BOTTOM
+              },
+              fullscreenControl: true
+            },
+            marker,
+            markerInfoWindow,
+            geocoder;
+
+        let baseKmlUrl = 'https://sites.google.com/a/energygeeks.com/mkmf/ust/',
+            layerUrls = {
+              oucheck: {
+                'HeaderText': 'Ontario Utilities',
+                'kmlURL': baseKmlUrl + 'ou.kml'
+              },
+              pcheck: {
+                'HeaderText': 'Polaron Service Territory',
+                'kmlURL': baseKmlUrl + 'ps.kml'
+              },
+              gcheck: {
+                'HeaderText': 'Grasshopper Service Territory',
+                'kmlURL': baseKmlUrl + 'gs.kml'
+              },
+              ucheck: {
+                'HeaderText': 'Upstream Service Territory',
+                'kmlURL': baseKmlUrl + 'us.kml'
+              },
+              clear: {
+                'HeaderText': '',
+                'kmlURL': ''
+              }
+            };
+
+        function initMap() {
+          map = new google.maps.Map(mapEl, mapOptions);
+          geocoder = new google.maps.Geocoder();
+          lead.address = getAddress(lead.latLng);
+          map.setCenter(lead.latLng);
+          initMarker();
+        }
+
+        function initMarker() {
+
+          marker = new google.maps.Marker({
+            position: lead.latLng,
+            map: map,
+            draggable: true,
+            title: lead.name
+          });
+
+          markerInfoWindow = new google.maps.InfoWindow({
+            content: `
+            <div class="popup">
+            <p>${lead.name}</p>
+            <button type=button" onclick="setKml(this.value)" value="ucheck">Upstream Check</button>
+            </div>`
+          });
+
+          // Map Event Listeners
+          marker.addListener('click', function() {
+            markerInfoWindow.open(map, marker);
+          });
+
+          marker.addListener('dragend', function() {
+            let pos = marker.getPosition();
+            updateMarkerGeoPos(pos);
+            updateMarkerAddress(pos);
+          });
+
+          markerInfoWindow.addListener('closeclick', function() {
+            map.setCenter(marker.getPosition());
+          });
+
+        }
+
+        function getAddress(latLng) {
+          geocoder.geocode({ address: formatAddress(latLng)}, function(results, status) {
+            if ( status !== google.maps.GeocoderStatus.OK ) {
+              mapEl.style.height = '15px';
+              mapEl.innerHtml = `Oops! ${lead.name}'s address could not be found, please make sure the address is correct.`;
+              return;
+            }
+           return results[0].geometry.location;
+          }
+        }
+
+        function formatAddress(latLng) {
+          return `${latLng.lat} , ${latLng.lng}`;
+        }
+
+        function updateMarkerAddress(latLng) {
+          geocoder.geocode({ latLng: latLng }, function(responses) {
+            const fail = 'Cannot determine an address at this location';
+            let address = responses && responses.length > 0 ? responses[0].formatted_address : fail;
+            addressEl.innerHTML = address;
+          });
+        }
+
+        function updateMarkerGeoPos(latLng) {
+          let lat = typeof latLng.lat === 'function' ? latLng.lat() : latLng.lat,
+              lng = typeof latLng.lng === 'function' ? latLng.lng() : latLng.lng;
+          latLngEl.firstElementChild.firstElementChild.lastElementChild.textContent = lat;
+          latLngEl.firstElementChild.lastElementChild.lastElementChild.textContent = lng;
+        }
+
+        function toggleLayerFunctions() {
+          let storage = {};
+          return {
+
+            toggleLayer: function(layer) {
+              if ( !(layer in storage) ) {
+                storage[layer] = {};
+                storage[layer].active = false;
+                storage[layer].overlay = new google.maps.KmlLayer({
+                  url: layerUrls[layer].kmlURL,
+                  map: map,
+                  preserveViewport: true,
+                  suppressInfoWindows: true
+                });
+              }
+              if ( !storage[layer].active ) {
+                storage[layer].overlay.setMap(map);
+                storage[layer].active = true;
+              } else {
+                storage[layer].overlay.setMap(null);
+                storage[layer].active = false;
+              }
+            },
+
+            clearLayers: function() {
+              for ( let layer in storage ) {
+                if ( storage[layer].active ) {
+                  storage[layer].overlay.setMap(null);
+                  storage[layer].active = false;
+                }
+              }
+            }
+
+          }
+        }
+
+        let toggleLayerFunctionsInit = toggleLayerFunctions();
+        toggleLayer = toggleLayerFunctionsInit.toggleLayer;
+        clearLayers = toggleLayerFunctionsInit.clearLayers;
+
+      </script>
+    </body>
+  </html>
+</apex:page>
