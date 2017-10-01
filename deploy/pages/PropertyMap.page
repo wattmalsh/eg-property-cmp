@@ -9,75 +9,94 @@
     </head>
     <body>
       <div id="map"/>
+      <!-- note defer="true" sets the script to load after the doc has been parsed but before firing DOMContentLoaded. Synchronous JS (in this case the custom script) pauses parsing of the DOM. -->
       <script src="https://maps.googleapis.com/maps/api/js?callback=initMap" async="true" defer="true"></script>
       <script>
 
-        // dummy lead
-        let lead = {
-          name: 'Marcus Joo',
-          latLng: { lat: 43.646335, lng: -79.530037 },
-        };
+        let lexOrigin = 'https://{!$Currentpage.parameters.lcHost}'; // the origin (protocol + port + host)
 
-        // the origin (protocol + port + host) lightning components are loaded from. this is where we expect messages to come from
-        let lexOrigin = 'https://{!$Currentpage.parameters.lcHost}';
-
-        // map and marker variables
         let mapEl = document.getElementById('map'),
-            map,
-            mapOptions = {
-              zoom: 20,
-              gestureHandling: 'greedy',
-              mapTypeId: google.maps.MapTypeId.HYBRID,
-              mapTypeControl: true,
-              mapTypeControlOptions: {
-                style: google.maps.MapTypeControlStyle.HORIZONTAL_BAR,
-                position: google.maps.ControlPosition.TOP_CENTER
-              },
-              zoomControl: true,
-              zoomControlOptions: {
-                position: google.maps.ControlPosition.RIGHT_CENTER
-              },
-              scaleControl: true,
-              streetViewControl: true,
-              streetViewControlOptions: {
-                position: google.maps.ControlPosition.LEFT_BOTTOM
-              },
-              fullscreenControl: true
-            },
+            mapCenter = { lat: 43.646335, lng: -79.530037 }; // arbitrary initial map center in Toronto
+
+        // attr are values that are in sync with LC
+        let attr = {};
+        attr.lead = {}; // { name: '', latLng: { lat: 0, lng: 0 }, address: '' }
+        attr.marker = {}; // { latLng: { lat: 0, lng: 0 }, address: '' }
+        attr.layers = []; // [ { btnName: '', displayName: '', active: '' }, {...}, {...} ]
+
+        // google map api variables
+        let map,
             marker,
             markerInfoWindow,
-            geocoder;
+            geocoder,
+            kmlLayers;
 
-        let baseKmlUrl = 'https://sites.google.com/a/energygeeks.com/mkmf/ust/',
-            layerUrls = {
-              oucheck: {
-                'HeaderText': 'Ontario Utilities',
-                'kmlURL': baseKmlUrl + 'ou.kml'
-              },
-              pcheck: {
-                'HeaderText': 'Polaron Service Territory',
-                'kmlURL': baseKmlUrl + 'ps.kml'
-              },
-              gcheck: {
-                'HeaderText': 'Grasshopper Service Territory',
-                'kmlURL': baseKmlUrl + 'gs.kml'
-              },
-              ucheck: {
-                'HeaderText': 'Upstream Service Territory',
-                'kmlURL': baseKmlUrl + 'us.kml'
-              },
-              clear: {
-                'HeaderText': '',
-                'kmlURL': ''
-              }
-            };
+        let mapOptions = {
+          zoom: 20,
+          gestureHandling: 'greedy',
+          mapTypeId: google.maps.MapTypeId.HYBRID,
+          mapTypeControl: true,
+          mapTypeControlOptions: {
+            style: google.maps.MapTypeControlStyle.HORIZONTAL_BAR,
+            position: google.maps.ControlPosition.TOP_CENTER
+          },
+          zoomControl: true,
+          zoomControlOptions: {
+            position: google.maps.ControlPosition.RIGHT_CENTER
+          },
+          scaleControl: true,
+          streetViewControl: true,
+          streetViewControlOptions: {
+            position: google.maps.ControlPosition.LEFT_BOTTOM
+          },
+          fullscreenControl: true
+        };
+
+        function sendToLC(message) {
+          parent.postMessage(message, lexOrigin);
+        }
+
+        // handle record response from LC
+        window.addEventListener("message", function(event) {
+
+          if (event.origin !== lexOrigin) {
+            return;
+          }
+
+          if (event.data.name === "initResponse") {
+            // handle lead record
+            attr.lead = event.data.record.lead;
+            map.setCenter(event.data.record.lead.latLng);
+            initMarker(event.data.record.lead);
+            // check for lead record / google map discrepancies
+            if (attr.lead.address !== geocodeLatLng(attr.lead.latLng)) {
+              //TODO: alert that addresses don't match up and ask user to remedy
+            }
+            // handle kml layers
+            attr.layers = event.data.record.layers;
+            createLayerReferences(attr.layers);
+          }
+
+          if (event.data.name === "recordUpdateSuccess") {
+            //TODO: use CSS to notify user record successfully updated in database
+          }
+
+          if (event.data.name === "kmlUpdate") {
+            attr.layers = event.data.record.layers;
+            toggleLayers(attr.layers);
+          }
+
+        }, false);
 
         function initMap() {
+
+          // send to LC, google api loaded and DOMContentLoaded event fired so ready to receive record
+          sendToLC("init");
+
+          // load a blank map
           map = new google.maps.Map(mapEl, mapOptions);
-          geocoder = new google.maps.Geocoder();
-          lead.address = getAddress(lead.latLng);
-          map.setCenter(lead.latLng);
-          initMarker();
+          map.setCenter( mapCenter );
+
         }
 
         function initMarker() {
@@ -92,20 +111,20 @@
           markerInfoWindow = new google.maps.InfoWindow({
             content: `
             <div class="popup">
-            <p>${lead.name}</p>
-            <button type=button" onclick="setKml(this.value)" value="ucheck">Upstream Check</button>
+            <p>${attr.lead.name}</p>
+            <p>${attr.lead.address}</p>
             </div>`
           });
 
-          // Map Event Listeners
+          // marker and markerInfoWindow event listeners
           marker.addListener('click', function() {
             markerInfoWindow.open(map, marker);
           });
 
           marker.addListener('dragend', function() {
-            let pos = marker.getPosition();
-            updateMarkerGeoPos(pos);
-            updateMarkerAddress(pos);
+            let latLng = marker.getPosition();
+            attr.marker = { latLng: latLng, address: geocodeLatLng(latLng) };
+            sendToLC(JSON.stringify(attr.marker));
           });
 
           markerInfoWindow.addListener('closeclick', function() {
@@ -114,75 +133,37 @@
 
         }
 
-        function getAddress(latLng) {
-          geocoder.geocode({ address: formatAddress(latLng)}, function(results, status) {
-            if ( status !== google.maps.GeocoderStatus.OK ) {
-              mapEl.style.height = '15px';
-              mapEl.innerHtml = `Oops! ${lead.name}'s address could not be found, please make sure the address is correct.`;
-              return;
-            }
-           return results[0].geometry.location;
+        // return the closest human-readable address from latLng
+        function geocodeLatLng(latLng) {
+          if ( typeof geocoder === 'undefined' ) {
+            geocoder = new google.maps.Geocoder();
           }
-        }
-
-        function formatAddress(latLng) {
-          return `${latLng.lat} , ${latLng.lng}`;
-        }
-
-        function updateMarkerAddress(latLng) {
-          geocoder.geocode({ latLng: latLng }, function(responses) {
-            const fail = 'Cannot determine an address at this location';
-            let address = responses && responses.length > 0 ? responses[0].formatted_address : fail;
-            addressEl.innerHTML = address;
+          geocoder.geocode({ location: latLng }, function(results, status) {
+            if ( status === 'OK' ) {
+              return results[0].formatted_address;
+            } else {
+              const fail = 'Cannot determine an address at this location';
+              //TODO: handle geocoder error
+            }
           });
         }
 
-        function updateMarkerGeoPos(latLng) {
-          let lat = typeof latLng.lat === 'function' ? latLng.lat() : latLng.lat,
-              lng = typeof latLng.lng === 'function' ? latLng.lng() : latLng.lng;
-          latLngEl.firstElementChild.firstElementChild.lastElementChild.textContent = lat;
-          latLngEl.firstElementChild.lastElementChild.lastElementChild.textContent = lng;
-        }
-
-        function toggleLayerFunctions() {
-          let storage = {};
-          return {
-
-            toggleLayer: function(layer) {
-              if ( !(layer in storage) ) {
-                storage[layer] = {};
-                storage[layer].active = false;
-                storage[layer].overlay = new google.maps.KmlLayer({
-                  url: layerUrls[layer].kmlURL,
-                  map: map,
-                  preserveViewport: true,
-                  suppressInfoWindows: true
-                });
-              }
-              if ( !storage[layer].active ) {
-                storage[layer].overlay.setMap(map);
-                storage[layer].active = true;
-              } else {
-                storage[layer].overlay.setMap(null);
-                storage[layer].active = false;
-              }
-            },
-
-            clearLayers: function() {
-              for ( let layer in storage ) {
-                if ( storage[layer].active ) {
-                  storage[layer].overlay.setMap(null);
-                  storage[layer].active = false;
-                }
-              }
-            }
-
+        function createLayerReferences(layers) {
+          for ( let i=0; i<layers.length; i++ ) {
+            kmlLayers[i] = new google.maps.KmlLayer({
+              url: layers[i].url,
+              map: map,
+              preserveViewport: true,
+              suppressInfoWindows: true
+            });
           }
         }
 
-        let toggleLayerFunctionsInit = toggleLayerFunctions();
-        toggleLayer = toggleLayerFunctionsInit.toggleLayer;
-        clearLayers = toggleLayerFunctionsInit.clearLayers;
+        function toggleLayers(layers) {
+          for ( let i=0; i<layers.length; i++ ) {
+            layers[i].active ? kmlLayers[i].setMap(map) : kmlLayers[i].setMap(null);
+          }
+        }
 
       </script>
     </body>
