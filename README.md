@@ -2,9 +2,7 @@ Energy Geeks Salesforce.com
 ===========================
 
 Salesforce.com deployment and testing utilizing
-[Apache Ant](http://ant.apache.org/),
-[Force.com Migration Tool](https://developer.salesforce.com/page/Force.com_Migration_Tool) and the
-[Greased](https://github.com/stevebuik/greased)
+[Apache Ant](http://ant.apache.org/), [Force.com Migration Tool](https://developer.salesforce.com/page/Force.com_Migration_Tool) and [Greased](https://github.com/stevebuik/greased).
 
 For deployment, included is an Ant build.xml file with targets (command-line operations) to interact with Force.com Migration Tool targets. Targets are grouped into 3 categories: ``deploy``, ``retrieve`` and ``undeploy``. Target names specify which Salesforce environment (``development`` or ``production``) and server (``sandbox`` or ``production``) to utlize.
 
