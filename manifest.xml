@@ -9,12 +9,12 @@
     <name>AuraDefinitionBundle</name>
   </types>
   <types>
-    <members>PropertyPage</members>
+    <members>PropertyMap</members>
     <name>ApexPage</name>
   </types>
   <types>
     <members>*</members>
     <name>StaticResource</name>
   </types>
-  <version>40.0</version>
+  <version>41.0</version>
 </Package>

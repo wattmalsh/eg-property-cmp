@@ -218,6 +218,12 @@
   </target>
 
   <target name="-filterAllDeployDirs" depends="-getDeployMetadata" >
+    <mkdir dir="${dir.tmp.deploy}" />
+    <move todir="${dir.tmp.deploy}" preservelastmodified="true" >
+      <fileset dir="${dir.deploy}">
+        <exclude name="*.xml"/>
+      </fileset>
+    </move>
     <foreach target="-filterDeployDir" list="${list.deploy.metadata}" delimiter="${line.separator}" param="tmp.deploy.metadata" />
   </target>
 
@@ -251,12 +257,10 @@
     <attribute name="dir" />
     <attribute name="tmp" />
     <sequential>
-      <mkdir dir="@{tmp}" />
-      <move file="@{dir}/@{dirName}" todir="@{tmp}" preservelastmodified="true" />
       <if>
         <equals arg1="@{metadata}" arg2="@{pkgName}" />
         <then>
-          <move file="@{tmp}/@{dirName}" todir="@{dir}" preservelastmodified="true" />
+          <move file="@{tmp}/@{dirName}" todir="@{dir}" preservelastmodified="true" verbose="true" />
         </then>
       </if>
     </sequential>
@@ -318,6 +322,7 @@
     </sequential>
   </macrodef>
 
+  <!-- TODO: -filterAllDeployDirs does not at this moment filter members, it only handles  the wildcard * -->
   <macrodef name="deploy" >
     <attribute name="deployRoot" />
     <attribute name="pkg" />

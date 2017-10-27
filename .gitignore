@@ -1,5 +1,6 @@
 logs
 backup
+backup*
 deploy/package.xml
 retrieve/**/*
 undeploy/**/*
@@ -7,3 +8,6 @@ undeploy/**/*
 !**/destructiveChanges.example.xml
 build.properties
 .ant-targets-build.xml
+node_modules/
+package-lock.json
+package.json
