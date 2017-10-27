@@ -1,7 +1,7 @@
 logs
 backup
 backup*
-deploy/package.xml
+src/package.xml
 retrieve/**/*
 undeploy/**/*
 !**/package.example.xml

@@ -3,17 +3,17 @@
 
   <property name="dir.logs" location="logs" />
   <property name="dir.lib" location="lib" />
-  <property name="dir.deploy" location="deploy" />
+  <property name="dir.deploy" location="src" />
   <property name="dir.backup" location="backup" />
   <property name="dir.retrieve" location="retrieve" />
-  <property name="dir.deploy.staticresources" location="deploy/staticresources" />
+  <property name="dir.deploy.staticresources" location="src/staticresources" />
   <property name="dir.undeploy" location="undeploy" />
   <property name="dir.undeploy.backup" location="undeploy/backup" />
   <property name="dir.tmp" location="tmp" />
   <property name="dir.tmp.deploy" location="tmp/deploy" />
   <property name="file.manifest" location="manifest.xml" />
   <property name="file.retrieve.pkg" location="retrieve/package.xml" />
-  <property name="file.deploy.pkg" location="deploy/package.xml" />
+  <property name="file.deploy.pkg" location="src/package.xml" />
   <property name="file.undeploy.pkg" location="undeploy/package.xml" />
   <property name="file.tmp.pkg" location="tmp/package.xml" />
   <property file="build.properties" />
