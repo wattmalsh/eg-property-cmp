@@ -92,5 +92,12 @@ Run ``ant [target]`` from the base directory to utilize targets of the migration
 Testing with Greased
 --------------------
 
-### TODO
+### Deploy testing suite to sandbox and production environments
+```sh
+Follow this link and allow site access to SalesForce credentials to deploy test suite to sandbox:
+  https://githubsfdeploy-sandbox.herokuapp.com/app/githubdeploy/stevebuik/greased
+
+Follow this link and allow site access to SalesForce credentials to deploy test suite to production:
+  https://githubsfdeploy.herokuapp.com/app/githubdeploy/stevebuik/greased
+```
 
