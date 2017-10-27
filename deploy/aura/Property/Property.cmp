@@ -1,0 +1,44 @@
+<aura:component implements="force:hasRecordId,flexipage:availableForRecordHome">
+
+  <aura:attribute name="vfHost" type="String" default="energygeeks-matt-dev-ed--c.na73.visual.force.com" />
+  <aura:attribute name="kmlLayers" type="Object[]" />
+  <aura:attribute name="record" type="Object" />
+  <aura:attribute name="fullRecord" type="Object" />
+  <aura:attribute name="recordError" type="String" />
+
+  <force:recordData aura:id="forceRecord"
+    recordId="{! v.recordId }"
+    fields="Id,Name,Street,City,State,Country,PostalCode,Latitude,Longitude"
+    targetError="{! v.recordError }"
+    targetRecord="{! v.fullRecord }"
+    targetFields="{! v.record }"
+    mode="EDIT"
+    recordUpdated="{! c.recordUpdated }"
+    />
+
+  <div class="c-container">
+
+    <lightning:layout multipleRows="true" verticalAlign="start" >
+
+      <lightning:layoutItem size="12" >
+        <c:PropertyMap
+          vfHost="{# v.vfHost }"
+          record="{! v.record }"
+          kmlLayers="{! v.kmlLayers }"
+          />
+      </lightning:layoutItem>
+
+      <lightning:layoutItem size="12" >
+        <c:PropertyOptions kmlLayers="{! v.kmlLayers }" />
+      </lightning:layoutItem>
+
+      <lightning:layoutItem size="12" >
+        <c:PropertyDetails record="{! v.record }"
+          />
+      </lightning:layoutItem>
+
+    </lightning:layout>
+
+  </div>
+
+</aura:component>

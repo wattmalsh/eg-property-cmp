@@ -1,0 +1,22 @@
+<aura:component>
+
+  <aura:attribute name="record" type="Object" />
+  <!-- "Id,Name,Street,City,State,Country,Postal Code,Latitude,Longitude" -->
+
+  <lightning:card>
+    <aura:set attribute="title" >
+      {! v.record.name }
+    </aura:set>
+    <aura:set attribute="actions" >
+      <lightning:button label="Update Record" onclick="{! c.handleSaveRecord }" />
+    </aura:set>
+    <aura:set attribute="footer" >
+      A footer
+    </aura:set>
+    <p>lat: {! v.record.Latitude }</p>
+    <p>lng: {! v.record.Longitude }</p>
+    <p>Closest matching address:</p>
+    <p>{!v.record.Street}, {!v.record.City}, {!v.record.State} {!v.record.PostalCode}, {!v.record.Country}</p>
+  </lightning:card>
+
+</aura:component>
