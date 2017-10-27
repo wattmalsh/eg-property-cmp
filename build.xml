@@ -248,6 +248,7 @@
     <filterByPkgName metadata="${tmp.deploy.metadata}" pkgName="StaticResource" dirName="staticresources" dir="${dir.deploy}" tmp="${dir.tmp.deploy}" />
     <filterByPkgName metadata="${tmp.deploy.metadata}" pkgName="AuraDefinitionBundle" dirName="aura" dir="${dir.deploy}" tmp="${dir.tmp.deploy}" />
     <filterByPkgName metadata="${tmp.deploy.metadata}" pkgName="ApexPage" dirName="pages" dir="${dir.deploy}" tmp="${dir.tmp.deploy}" />
+    <filterByPkgName metadata="${tmp.deploy.metadata}" pkgName="ApexClass" dirName="classes" dir="${dir.deploy}" tmp="${dir.tmp.deploy}" />
   </target>
 
   <macrodef name="filterByPkgName" >
