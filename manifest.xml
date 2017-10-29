@@ -4,13 +4,10 @@
   <types>
     <members>PropertyApp</members>
     <members>Property</members>
-    <members>PropertyTests</members>
     <members>PropertyMap</members>
-    <members>PropertyMapTests</members>
     <members>PropertyOptions</members>
-    <members>PropertyOptionsTests</members>
     <members>PropertyDetails</members>
-    <members>PropertyDetailsTests</members>
+    <members>PropertyAttributeUpdate</members>
     <name>AuraDefinitionBundle</name>
   </types>
   <types>

@@ -5,8 +5,10 @@
   <aura:attribute name="record" type="Object" />
   <aura:attribute name="fullRecord" type="Object" />
   <aura:attribute name="recordError" type="String" />
+  <aura:attribute name="test" type="String" default="Nada"/>
 
   <aura:handler name="init" value="{! this }" action="{! c.doInit }" />
+  <aura:handler name="updateAttributes" event="c:PropertyAttributeUpdate" action="{! c.handleAttributeUpdate }" />
 
   <force:recordData
     aura:id="forceRecord"
@@ -20,6 +22,9 @@
     />
 
   <div class="c-container">
+
+  <p>Testing stuff:</p>
+  <p>{!v.test}</p>
 
     <lightning:layout multipleRows="true" verticalAlign="start" >
 

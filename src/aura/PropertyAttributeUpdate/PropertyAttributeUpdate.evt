@@ -1,0 +1,4 @@
+<aura:event type="COMPONENT" description="Event sent to top-level component" >
+  <aura:attribute name="record" type="Object" />
+  <aura:attribute name="kmlLayers" type="Object[]" />
+</aura:event>

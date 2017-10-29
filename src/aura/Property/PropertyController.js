@@ -33,6 +33,12 @@
     ]);
   },
 
+  handleAttributeUpdate: function(component, event, helper) {
+    component.set("v.test", "successfully recieved attribute update event");
+    component.set("v.record", event.getParam("record"));
+    component.set("v.kmlLayers", event.getParam("layers"));
+  },
+
   handleSaveRecord: function(component, event, helper) {
     component.find("forceRecord").saveRecord($A.getCallback(function(saveResult) {
       if (saveResult.state === "SUCCESS" || saveResult.state === "DRAFT") {
