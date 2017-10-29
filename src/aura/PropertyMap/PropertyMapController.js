@@ -7,7 +7,6 @@
         // Not the expected origin: reject message
         return;
       }
-      component.set("v.test", JSON.stringify(event.data));
       // Only handle messages we are interested in
       if (event.data === "init") {
         let message = {
@@ -18,11 +17,9 @@
           }
         }
         helper.sendToVF(component, message);
-        helper.sendToParent(component);
       }
       if ( event.data.name === "marker dragend" ) {
-        component.set("v.record", event.data.record);
-        helper.sendToParent(component);
+        helper.sendToParent(component, { record: event.data.record });
       }
     }, false);
   },

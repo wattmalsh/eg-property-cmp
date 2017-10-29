@@ -127,7 +127,7 @@
             geocodeLatLng(latLng, record);
             record.Latitude = latLng.lat();
             record.Longitude = latLng.lng();
-            let message = Object.assign({}, record, { name: "marker dragend"})
+            let message = { name: "marker dragend", record: record};
             sendToLC(message);
           });
 

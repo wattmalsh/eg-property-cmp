@@ -1,12 +1,12 @@
 <aura:component>
 
   <aura:attribute name="record" type="Object" />
-  <aura:attribute name="test" type="Object" default="Nada" />
+  <aura:attribute name="eventdata" type="Object" default="Nada" />
   <!-- "Id,Name,Street,City,State,Country,Postal Code,Latitude,Longitude" -->
 
   <lightning:card>
     <aura:set attribute="title" >
-      {! v.record.name }
+      {! v.record.Name }
     </aura:set>
     <aura:set attribute="actions" >
       <lightning:button label="Update Record" onclick="{! c.handleSaveRecord }" />
@@ -14,7 +14,8 @@
     <aura:set attribute="footer" >
       A footer
     </aura:set>
-    <p>{! v.test }</p>
+    <p><b>Property Details</b></p>
+    <p>eventdata: {! v.eventdata }</p>
     <p>{! v.record.Name }</p>
     <p>lat: {! v.record.Latitude }</p>
     <p>lng: {! v.record.Longitude }</p>

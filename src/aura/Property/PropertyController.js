@@ -34,9 +34,8 @@
   },
 
   handleAttributeUpdate: function(component, event, helper) {
-    component.set("v.test", "successfully recieved attribute update event");
+    component.set("v.eventdata", JSON.stringify(event.getParam("record")));
     component.set("v.record", event.getParam("record"));
-    component.set("v.kmlLayers", event.getParam("kmlLayers"));
   },
 
   handleSaveRecord: function(component, event, helper) {

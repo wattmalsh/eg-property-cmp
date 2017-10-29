@@ -5,7 +5,7 @@
   <aura:attribute name="record" type="Object" />
   <aura:attribute name="fullRecord" type="Object" />
   <aura:attribute name="recordError" type="String" />
-  <aura:attribute name="test" type="String" default="Nada"/>
+  <aura:attribute name="eventdata" type="String" default="Nada"/>
 
   <aura:handler name="init" value="{! this }" action="{! c.doInit }" />
   <aura:handler name="updateAttributes" event="c:PropertyAttributeUpdate" action="{! c.handleAttributeUpdate }" />
@@ -23,10 +23,12 @@
 
   <div class="c-container">
 
-  <p>Testing stuff:</p>
-  <p>{!v.test}</p>
-  <p>address: </p>
-  <p>{!v.record.address}</p>
+  <p><b>Property.cmp</b></p>
+  <p>eventdata: {!v.eventdata}</p>
+  <p>Name: {!v.record.Name}</p>
+  <p>Street: {!v.record.Street}</p>
+  <p>Latitude: {!v.record.Latitude}</p>
+  <p>Longitude: {!v.record.Longitude}</p>
 
     <lightning:layout multipleRows="true" verticalAlign="start" >
 
@@ -43,7 +45,7 @@
       </lightning:layoutItem>
 
       <lightning:layoutItem size="12" >
-        <c:PropertyDetails record="{! v.record }" test="{! v.test }"
+        <c:PropertyDetails record="{! v.record }" eventdata="{! v.eventdata }"
           />
       </lightning:layoutItem>
 
