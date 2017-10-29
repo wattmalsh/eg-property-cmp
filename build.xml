@@ -384,7 +384,6 @@
   </target>
 
   <target name="deployToProduction" depends="-init" description="" >
-    <retrieve retrieveTargetBase="backup-deployToProduction-${tstamp}" pkg="${file.deploy.pkg}" />
     <deploy deployRoot="${dir.deploy}" pkg="${file.deploy.pkg}" />
   </target>
 
