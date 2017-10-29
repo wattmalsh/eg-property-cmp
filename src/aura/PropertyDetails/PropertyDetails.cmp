@@ -13,6 +13,7 @@
     <aura:set attribute="footer" >
       A footer
     </aura:set>
+    <p>{! v.record.Name }</p>
     <p>lat: {! v.record.Latitude }</p>
     <p>lng: {! v.record.Longitude }</p>
     <p>Closest matching address:</p>

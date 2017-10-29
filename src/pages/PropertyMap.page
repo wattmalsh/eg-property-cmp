@@ -40,27 +40,28 @@
             return;
           }
 
-          if (e.data === "initResponse") {
-            // parse JSON
+          let data = JSON.parse(e.data);
+
+          if (data.name === "initResponse") {
             // handle lead record
-            /* record = message.payload.record; */
-            /* record.address = `${record.Street} ${record.City}, ${record.State} ${record.Country} ${record.PostalCode}`; */
-            /* map.setCenter({ lat: record.Latitude, lng: record.Longitude}); */
+            record = data.payload.record;
+            record.address = `${record.Street} ${record.City}, ${record.State} ${record.Country} ${record.PostalCode}`;
+            map.setCenter({ lat: record.Latitude, lng: record.Longitude});
             initMarker();
             // check for lead record / google map discrepancies
-            /* if (record.address !== geocodeLatLng(latLng)) { */
+            if (record.address !== geocodeLatLng(latLng)) {
               //TODO: alert that addresses don't match up and ask user to remedy
-            /* } */
+            }
             // handle kml layers
-            /* layers = message.payload.layers; */
-              /* createLayerReferences(layers); */
+            layers = data.payload.layers;
+            createLayerReferences(layers);
           }
 
-          if (e.data === "recordUpdateSuccess") {
+          if (data.name === "recordUpdateSuccess") {
             //TODO: use CSS to notify user record successfully updated in database
           }
 
-          if (e.data === "kmlUpdate") {
+          if (data.name === "kmlUpdate") {
             /* layers = message.data; */
             /* toggleLayers(layers); */
           }
@@ -110,7 +111,7 @@
             content: `
             <div class="popup">
             <p>${record.Name}</p>
-            <p>${record.Address}</p>
+            <p>${record.address}</p>
             </div>`
           });
 
