@@ -7,6 +7,7 @@
         // Not the expected origin: reject message
         return;
       }
+      component.set("v.test", JSON.stringify(event.data));
       // Only handle messages we are interested in
       if (event.data === "init") {
         let message = {

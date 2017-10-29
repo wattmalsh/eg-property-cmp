@@ -1,6 +1,7 @@
 <aura:component>
 
   <aura:attribute name="record" type="Object" />
+  <aura:attribute name="test" type="Object" default="Nada" />
   <!-- "Id,Name,Street,City,State,Country,Postal Code,Latitude,Longitude" -->
 
   <lightning:card>
@@ -13,6 +14,7 @@
     <aura:set attribute="footer" >
       A footer
     </aura:set>
+    <p>{! v.test }</p>
     <p>{! v.record.Name }</p>
     <p>lat: {! v.record.Latitude }</p>
     <p>lng: {! v.record.Longitude }</p>

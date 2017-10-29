@@ -25,6 +25,8 @@
 
   <p>Testing stuff:</p>
   <p>{!v.test}</p>
+  <p>address: </p>
+  <p>{!v.record.address}</p>
 
     <lightning:layout multipleRows="true" verticalAlign="start" >
 
@@ -41,7 +43,7 @@
       </lightning:layoutItem>
 
       <lightning:layoutItem size="12" >
-        <c:PropertyDetails record="{! v.record }"
+        <c:PropertyDetails record="{! v.record }" test="{! v.test }"
           />
       </lightning:layoutItem>
 
