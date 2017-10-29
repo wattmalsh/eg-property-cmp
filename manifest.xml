@@ -8,6 +8,7 @@
     <members>PropertyOptions</members>
     <members>PropertyDetails</members>
     <members>PropertyAttributeUpdate</members>
+    <members>PropertySaveRecord</members>
     <name>AuraDefinitionBundle</name>
   </types>
   <types>

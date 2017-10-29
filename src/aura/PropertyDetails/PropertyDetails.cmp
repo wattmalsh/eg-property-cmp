@@ -4,12 +4,14 @@
   <aura:attribute name="eventdata" type="Object" default="Nada" />
   <!-- "Id,Name,Street,City,State,Country,Postal Code,Latitude,Longitude" -->
 
+  <aura:registerEvent name="saveRecord" type="c:PropertySaveRecord" />
+
   <lightning:card>
     <aura:set attribute="title" >
       {! v.record.Name }
     </aura:set>
     <aura:set attribute="actions" >
-      <lightning:button label="Update Record" onclick="{! c.handleSaveRecord }" />
+      <lightning:button label="Update Record" onclick="{! c.handleUpdateRecordClick }" />
     </aura:set>
     <aura:set attribute="footer" >
       A footer

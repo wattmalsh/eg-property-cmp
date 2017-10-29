@@ -6,9 +6,12 @@
   <aura:attribute name="fullRecord" type="Object" />
   <aura:attribute name="recordError" type="String" />
   <aura:attribute name="eventdata" type="String" default="Nada"/>
+  <aura:attribute name="saverecordevent" type="String" default="False"/>
+  <aura:attribute name="saverecordresults" type="String" default="NAda"/>
 
   <aura:handler name="init" value="{! this }" action="{! c.doInit }" />
   <aura:handler name="updateAttributes" event="c:PropertyAttributeUpdate" action="{! c.handleAttributeUpdate }" />
+  <aura:handler name="saveRecord" event="c:PropertySaveRecord" action="{! c.handleSaveRecord }" />
 
   <force:recordData
     aura:id="forceRecord"
@@ -24,6 +27,8 @@
   <div class="c-container">
 
   <p><b>Property.cmp</b></p>
+  <p>save record event: {!v.saverecordevent}</p>
+  <p>save record results: {!v.saverecordresults}</p>
   <p>eventdata: {!v.eventdata}</p>
   <p>Name: {!v.record.Name}</p>
   <p>Street: {!v.record.Street}</p>
