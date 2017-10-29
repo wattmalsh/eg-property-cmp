@@ -1,6 +1,6 @@
 ({
 
-  doInit : function(component, event, helper) {
+  doInit: function(component, event, helper) {
     let vfOrigin = "https://" + component.get("v.vfHost");
     window.addEventListener("message", function(event) {
       if (event.origin !== vfOrigin) {
@@ -9,13 +9,20 @@
       }
       // Only handle messages we are interested in
       if (event.data === "init") {
-        helper.sendToVF(component, event, helper);
+        let message = {
+          name: "initResponse",
+          payload: {
+            record: component.get("v.record"),
+            layers: component.get("v.kmlLayers")
+          }
+        }
+        helper.sendToVF(component, message);
       }
       if ( event.data.name === "marker dragend" ) {
-        // component.set("v.record", event.data.record);
+        component.set("v.record", event.data.record);
         // helper.sendToVF(component);
       }
     }, false);
-  }
+  },
 
 })
