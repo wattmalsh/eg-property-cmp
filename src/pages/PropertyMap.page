@@ -76,6 +76,7 @@
           // load a blank map
           mapOptions = {
             zoom: 20,
+            center: mapCenter,
             gestureHandling: 'greedy',
             mapTypeId: google.maps.MapTypeId.HYBRID,
             mapTypeControl: true,
@@ -95,8 +96,7 @@
             fullscreenControl: true
           };
           map = new google.maps.Map(mapEl, mapOptions);
-          map.setCenter( mapCenter );
-
+          geocoder = new google.maps.Geocoder;
         }
 
         function initMarker() {
@@ -123,14 +123,10 @@
 
           marker.addListener('dragend', function() {
             let latLng = marker.getPosition();
-            let address = geocodeLatLng(latLng);
-            record.Street = '535 Miramar Ave';
-            record.City = 'San Francisco';
-            record.State = 'CA';
-            record.Country = 'USA';
-            record.PostalCode = '94112';
-            record.Latitude = latLng.lat;
-            record.Longitude = latLng.lng;
+            // set record address, Street, City, State, Country, PostalCode
+            geocodeLatLng(latLng, record);
+            record.Latitude = latLng.lat();
+            record.Longitude = latLng.lng();
             let message = Object.assign({}, record, { name: "marker dragend"})
             sendToLC(message);
           });
@@ -142,16 +138,23 @@
         }
 
         // return the closest human-readable address from latLng
-        function geocodeLatLng(latLng) {
-          if ( typeof geocoder === 'undefined' ) {
-            geocoder = new google.maps.Geocoder();
-          }
+        function geocodeLatLng(latLng, record) {
           geocoder.geocode({ location: latLng }, function(results, status) {
             if ( status === 'OK' ) {
-              return results[0].formatted_address;
+              record.address = results[0].formatted_address;
+              let split = record.address.split(/,/);
+              record.Street = split[0];
+              record.City = split[1];
+              record.State = split[2].split(/ /)[1];
+              record.PostalCode = split[2].split(/ /)[2];
+              record.Country = split[3];
             } else {
-              const fail = 'Cannot determine an address at this location';
-              //TODO: handle geocoder error
+              record.address = 'Cannot determine an address at this location';
+              record.Street = 'null';
+              record.City = 'null';
+              record.State = 'null'
+              record.PostalCode = 'null';
+              record.Country = 'null';
             }
           });
         }
