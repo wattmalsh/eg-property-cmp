@@ -18,8 +18,8 @@
             mapCenter = { lat: 43.646335, lng: -79.530037 }; // arbitrary initial map center in Toronto
 
         // following are in sync with LC
-        let record = {}, // Id,Name,Street,City,State,Country,PostalCode,Latitude,Longitude,Address"
-            layers = []; // [ { url: '', btnName: '', displayName: '', active: '', ref: '' }, {...}, {...} ]
+        let record = {}, // Id,Name,Street,City,State,Country,PostalCode,Latitude,Longitude
+            layers = []; // [{ url:'',btnName:'',displayName:'',active:'',ref:''}, {...} ]
 
         // google map api variables
         let map,
@@ -49,12 +49,13 @@
             map.setCenter({ lat: record.Latitude, lng: record.Longitude});
             initMarker();
             // check for lead record / google map discrepancies
-            if (record.address !== geocodeLatLng(latLng)) {
-              //TODO: alert that addresses don't match up and ask user to remedy
-            }
+            /* if (record.address !== geocodeLatLng(latLng)) { */
+              /* //TODO: alert that addresses don't match up and ask user to remedy */
+            /* } */
             // handle kml layers
             layers = data.payload.layers;
             createLayerReferences(layers);
+            toggleLayers(layers);
           }
 
           if (data.name === "recordUpdateSuccess") {
@@ -168,7 +169,7 @@
 
         function toggleLayers(layers) {
           for ( let i=0; i<layers.length; i++ ) {
-            layers[i].active ? layers.ref[i].setMap(map) : layers.ref[i].setMap(null);
+            layers[i].active ? layers[i].ref.setMap(map) : layers[i].ref.setMap(null);
           }
         }
 
