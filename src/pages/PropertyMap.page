@@ -34,36 +34,35 @@
         }
 
         // handle record response from LC
-        window.addEventListener("message", function(event) {
+        window.addEventListener("message", function(e) {
 
-          if (event.origin !== lexOrigin) {
+          if (e.origin !== lexOrigin) {
             return;
           }
 
-          let message = event.data;
-
-          if (message.name === "initResponse") {
+          if (e.data === "initResponse") {
+            // parse JSON
             // handle lead record
-            record = message.payload.record;
-            record.address = `${record.Street} ${record.City}, ${record.State} ${record.Country} ${record.PostalCode}`;
-            map.setCenter({ lat: record.Latitude, lng: record.Longitude});
+            /* record = message.payload.record; */
+            /* record.address = `${record.Street} ${record.City}, ${record.State} ${record.Country} ${record.PostalCode}`; */
+            /* map.setCenter({ lat: record.Latitude, lng: record.Longitude}); */
             initMarker();
             // check for lead record / google map discrepancies
-            if (record.address !== geocodeLatLng(latLng)) {
+            /* if (record.address !== geocodeLatLng(latLng)) { */
               //TODO: alert that addresses don't match up and ask user to remedy
-            }
+            /* } */
             // handle kml layers
-            layers = message.payload.layers;
-              createLayerReferences(layers);
+            /* layers = message.payload.layers; */
+              /* createLayerReferences(layers); */
           }
 
-          if (message.name === "recordUpdateSuccess") {
+          if (e.data === "recordUpdateSuccess") {
             //TODO: use CSS to notify user record successfully updated in database
           }
 
-          if (message.name === "kmlUpdate") {
-            layers = message.data;
-            toggleLayers(layers);
+          if (e.data === "kmlUpdate") {
+            /* layers = message.data; */
+            /* toggleLayers(layers); */
           }
 
         }, false);
