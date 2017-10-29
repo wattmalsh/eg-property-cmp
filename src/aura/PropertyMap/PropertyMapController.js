@@ -17,6 +17,7 @@
           }
         }
         helper.sendToVF(component, message);
+        helper.sendToParent(component);
       }
       if ( event.data.name === "marker dragend" ) {
         component.set("v.record", event.data.record);
