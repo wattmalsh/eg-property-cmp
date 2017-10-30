@@ -1,6 +1,7 @@
 <aura:component implements="force:hasRecordId,flexipage:availableForRecordHome">
 
   <aura:attribute name="vfHost" type="String" default="energygeeks-matt-dev-ed--c.na73.visual.force.com" />
+  <aura:attribute name="buttonDisabled" type="String" default="true" />
   <aura:attribute name="kmlLayers" type="Object[]" />
   <aura:attribute name="record" type="Object" />
   <aura:attribute name="fullRecord" type="Object" />
@@ -59,7 +60,10 @@
       </lightning:layoutItem>
 
       <lightning:layoutItem size="12" >
-        <c:PropertyDetails record="{! v.record }" eventdata="{! v.eventdata }"
+        <c:PropertyDetails
+          buttonDisabled="{!v.buttonDisabled}"
+          record="{! v.record }"
+          eventdata="{! v.eventdata }"
           />
       </lightning:layoutItem>
 

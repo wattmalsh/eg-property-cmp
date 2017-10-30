@@ -48,13 +48,17 @@
     full.fields.Latitude.value = simple.Latitude;
     full.fields.Longitude.value = simple.Longitude;
     component.set("v.fullRecord", full)
+    // set disable on buttonDisabled to false
+    component.set("v.buttonDisabled", "false");
   },
 
   handleSaveRecord: function(component, event, helper) {
     component.set("v.saverecordevent", "save record event received");
     component.find("forceRecord").saveRecord($A.getCallback(function(saveResult) {
       if (saveResult.state === "SUCCESS" || saveResult.state === "DRAFT") {
-        //TODO: use UI message to show this
+        // display below button 'Success'
+        // change button style to 'disabled'
+        component.set("v.buttonDisabled", "true");
         console.log("Save completed successfully.");
       } else if (saveResult.state === "INCOMPLETE") {
         //TODO: use UI message to show this

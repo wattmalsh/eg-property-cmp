@@ -1,6 +1,7 @@
 <aura:component>
 
   <aura:attribute name="record" type="Object" />
+  <aura:attribute name="buttonDisabled" type="String" />
   <aura:attribute name="eventdata" type="Object" default="Nada" />
   <!-- "Id,Name,Street,City,State,Country,Postal Code,Latitude,Longitude" -->
 
@@ -11,7 +12,7 @@
       {! v.record.Name }
     </aura:set>
     <aura:set attribute="actions" >
-      <lightning:button label="Update Record" onclick="{! c.handleUpdateRecordClick }" />
+      <lightning:button label="Update Record" onclick="{! c.handleUpdateRecordClick }" disabled="{! v.buttonDisabled }"/>
     </aura:set>
     <aura:set attribute="footer" >
       A footer
