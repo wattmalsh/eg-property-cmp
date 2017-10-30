@@ -12,7 +12,7 @@
       <script>
 
         // let lexOrigin = 'https://{!$Currentpage.parameters.lcHost}'; // the origin (protocol + port + host)
-        let lexOrigin = 'https://energygeeks-matt-dev-ed.lightning.force.com'
+        let lexOrigin = 'https://energygeeks-matt-dev-ed.lightning.force.com';
 
         let mapEl = document.getElementById('map'),
             mapCenter = { lat: 43.646335, lng: -79.530037 }; // arbitrary initial map center in Toronto
@@ -46,6 +46,8 @@
           if (data.name === "initResponse") {
             // handle lead record
             record = data.payload.record;
+            record.Latitude = Number(record.Latitude);
+            record.Longitude = Number(record.Longitude);
             address = `${record.Street} ${record.City}, ${record.State} ${record.Country} ${record.PostalCode}`;
             map.setCenter({ lat: record.Latitude, lng: record.Longitude});
             initMarker();
@@ -103,7 +105,7 @@
         function initMarker() {
 
           marker = new google.maps.Marker({
-            position: { lat: 43.646335, lng: -79.530037 },
+            position: { lat: record.Latitude, lng: record.Longitude},
             map: map,
             draggable: true,
             title: record.Name
