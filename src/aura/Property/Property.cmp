@@ -13,6 +13,7 @@
   <aura:attribute name="changedfields" type="String" default="NAda"/>
   <aura:attribute name="thesimplerecord" type="String" default="NAda"/>
   <aura:attribute name="thefullrecord" type="String" default="NAda"/>
+  <aura:attribute name="thekmllayers" type="String" />
 
   <aura:handler name="init" value="{! this }" action="{! c.doInit }" />
   <aura:handler name="updateAttributes" event="c:PropertyAttributeUpdate" action="{! c.handleAttributeUpdate }" />
@@ -32,18 +33,12 @@
   <div class="c-container">
 
   <p><b>Property.cmp</b></p>
+  <p><b>kml layers:</b> {!v.thekmllayers}</p>
   <p><b>save record event:</b> {!v.saverecordevent}</p>
   <p><b>save record results:</b> {!v.saverecordresults}</p>
   <p><b>record updated changeType:</b> {!v.recordupdatedchangetype}</p>
   <p><b>changed fields:</b> {!v.changedfields}</p>
-  <p><b>the simple record:</b> {!v.thesimplerecord}</p>
-  <p><b>the fullRecord:</b> {!v.thefullrecord}</p>
-  <p><b>the fullRecord name:</b> {!v.fullRecord.fields.Name.value}</p>
-  <p><b>eventdata:</b> {!v.eventdata}</p>
-  <p><b>Name:</b> {!v.record.Name}</p>
-  <p><b>Street:</b> {!v.record.Street}</p>
-  <p><b>Latitude:</b> {!v.record.Latitude}</p>
-  <p><b>Longitude:</b> {!v.record.Longitude}</p>
+  <p><b>event data:</b> {!v.eventdata}</p>
 
     <lightning:layout multipleRows="true" verticalAlign="start" >
 
@@ -56,14 +51,16 @@
       </lightning:layoutItem>
 
       <lightning:layoutItem size="12" >
-        <c:PropertyOptions kmlLayers="{! v.kmlLayers }" />
+        <c:PropertyOptions
+          kmlLayers="{! v.kmlLayers }"
+          />
       </lightning:layoutItem>
 
       <lightning:layoutItem size="12" >
         <c:PropertyDetails
           buttonDisabled="{!v.buttonDisabled}"
           record="{! v.record }"
-          eventdata="{! v.eventdata }"
+          thekmllayers="{!v.thekmllayers}"
           />
       </lightning:layoutItem>
 

@@ -9,12 +9,6 @@
 
   <aura:registerEvent name="updateAttributes" type="c:PropertyAttributeUpdate" />
 
-  <p><b>PropertyMap.cmp</b></p>
-  <p>Name: {!v.record.Name}</p>
-  <p>Street: {!v.record.Street}</p>
-  <p>Latitude: {!v.record.Latitude}</p>
-  <p>Longitude: {!v.record.Longitude}</p>
-
   <iframe aura:id="vfFrame" src="{! 'https://' + v.vfHost + '/apex/PropertyMap' }"
     frameborder="0" width="100%" height="376" />
 

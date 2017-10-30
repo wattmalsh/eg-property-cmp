@@ -2,7 +2,7 @@
 
   <aura:attribute name="record" type="Object" />
   <aura:attribute name="buttonDisabled" type="String" />
-  <aura:attribute name="eventdata" type="Object" default="Nada" />
+  <aura:attribute name="thekmllayers" type="String" />
   <!-- "Id,Name,Street,City,State,Country,Postal Code,Latitude,Longitude" -->
 
   <aura:registerEvent name="saveRecord" type="c:PropertySaveRecord" />
@@ -18,7 +18,7 @@
       A footer
     </aura:set>
     <p><b>Property Details</b></p>
-    <p>eventdata: {! v.eventdata }</p>
+    <p><b>kml layers: </b>{!v.thekmllayers}</p>
     <p>{! v.record.Name }</p>
     <p>lat: {! v.record.Latitude }</p>
     <p>lng: {! v.record.Longitude }</p>

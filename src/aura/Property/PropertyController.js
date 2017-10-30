@@ -31,6 +31,7 @@
         ref: null
       }
     ]);
+    component.set("v.thekmllayers", JSON.stringify(component.get("v.kmlLayers")));
   },
 
   handleAttributeUpdate: function(component, event, helper) {
