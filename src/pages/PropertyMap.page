@@ -19,6 +19,7 @@
 
         // following are in sync with LC
         let record = {}, // Id,Name,Street,City,State,Country,PostalCode,Latitude,Longitude
+            address = '',
             layers = []; // [{ url:'',btnName:'',displayName:'',active:'',ref:''}, {...} ]
 
         // google map api variables
@@ -45,11 +46,11 @@
           if (data.name === "initResponse") {
             // handle lead record
             record = data.payload.record;
-            record.address = `${record.Street} ${record.City}, ${record.State} ${record.Country} ${record.PostalCode}`;
+            address = `${record.Street} ${record.City}, ${record.State} ${record.Country} ${record.PostalCode}`;
             map.setCenter({ lat: record.Latitude, lng: record.Longitude});
             initMarker();
             // check for lead record / google map discrepancies
-            /* if (record.address !== geocodeLatLng(latLng)) { */
+            /* if (address !== geocodeLatLng(latLng)) { */
               /* //TODO: alert that addresses don't match up and ask user to remedy */
             /* } */
             // handle kml layers
@@ -112,7 +113,7 @@
             content: `
             <div class="popup">
             <p>${record.Name}</p>
-            <p>${record.address}</p>
+            <p>${address}</p>
             </div>`
           });
 
@@ -123,7 +124,7 @@
 
           marker.addListener('dragend', function() {
             let latLng = marker.getPosition();
-            // set record address, Street, City, State, Country, PostalCode
+            // set Street, City, State, Country, PostalCode
             geocodeLatLng(latLng, record);
             record.Latitude = latLng.lat();
             record.Longitude = latLng.lng();
@@ -141,15 +142,15 @@
         function geocodeLatLng(latLng, record) {
           geocoder.geocode({ location: latLng }, function(results, status) {
             if ( status === 'OK' ) {
-              record.address = results[0].formatted_address;
-              let split = record.address.split(/,/);
+              address = results[0].formatted_address;
+              let split = address.split(/,/);
               record.Street = split[0];
               record.City = split[1];
               record.State = split[2].split(/ /)[1];
               record.PostalCode = split[2].split(/ /)[2];
               record.Country = split[3];
             } else {
-              record.address = 'Cannot determine an address at this location';
+              address = 'Cannot determine an address at this location';
               record.Street = 'null';
               record.City = 'null';
               record.State = 'null'

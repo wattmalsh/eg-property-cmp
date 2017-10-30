@@ -8,6 +8,10 @@
   <aura:attribute name="eventdata" type="String" default="Nada"/>
   <aura:attribute name="saverecordevent" type="String" default="False"/>
   <aura:attribute name="saverecordresults" type="String" default="NAda"/>
+  <aura:attribute name="recordupdatedchangetype" type="String" default="NAda"/>
+  <aura:attribute name="changedfields" type="String" default="NAda"/>
+  <aura:attribute name="thesimplerecord" type="String" default="NAda"/>
+  <aura:attribute name="thefullrecord" type="String" default="NAda"/>
 
   <aura:handler name="init" value="{! this }" action="{! c.doInit }" />
   <aura:handler name="updateAttributes" event="c:PropertyAttributeUpdate" action="{! c.handleAttributeUpdate }" />
@@ -27,13 +31,18 @@
   <div class="c-container">
 
   <p><b>Property.cmp</b></p>
-  <p>save record event: {!v.saverecordevent}</p>
-  <p>save record results: {!v.saverecordresults}</p>
-  <p>eventdata: {!v.eventdata}</p>
-  <p>Name: {!v.record.Name}</p>
-  <p>Street: {!v.record.Street}</p>
-  <p>Latitude: {!v.record.Latitude}</p>
-  <p>Longitude: {!v.record.Longitude}</p>
+  <p><b>save record event:</b> {!v.saverecordevent}</p>
+  <p><b>save record results:</b> {!v.saverecordresults}</p>
+  <p><b>record updated changeType:</b> {!v.recordupdatedchangetype}</p>
+  <p><b>changed fields:</b> {!v.changedfields}</p>
+  <p><b>the simple record:</b> {!v.thesimplerecord}</p>
+  <p><b>the fullRecord:</b> {!v.thefullrecord}</p>
+  <p><b>the fullRecord name:</b> {!v.fullRecord.fields.Name.value}</p>
+  <p><b>eventdata:</b> {!v.eventdata}</p>
+  <p><b>Name:</b> {!v.record.Name}</p>
+  <p><b>Street:</b> {!v.record.Street}</p>
+  <p><b>Latitude:</b> {!v.record.Latitude}</p>
+  <p><b>Longitude:</b> {!v.record.Longitude}</p>
 
     <lightning:layout multipleRows="true" verticalAlign="start" >
 
