@@ -14,16 +14,14 @@
     <aura:set attribute="actions" >
       <lightning:button label="Update Record" onclick="{! c.handleUpdateRecordClick }" disabled="{! v.buttonDisabled }"/>
     </aura:set>
-    <aura:set attribute="footer" >
-      A footer
-    </aura:set>
-    <p><b>Property Details</b></p>
     <p><b>kml layers: </b>{!v.thekmllayers}</p>
-    <p>{! v.record.Name }</p>
-    <p>lat: {! v.record.Latitude }</p>
-    <p>lng: {! v.record.Longitude }</p>
-    <p>Closest matching address:</p>
+    <p><strong>lat: </strong>{! v.record.Latitude }</p>
+    <p><strong>lng: </strong>{! v.record.Longitude }</p>
+    <p><strong>Closest matching address:</strong></p>
     <p>{!v.record.Street}, {!v.record.City}, {!v.record.State} {!v.record.PostalCode}, {!v.record.Country}</p>
+    <aura:set attribute="footer" >
+      Reset
+    </aura:set>
   </lightning:card>
 
 </aura:component>
