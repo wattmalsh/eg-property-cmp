@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2" xmlns:gx="http://www.google.com/kml/ext/2.2" xmlns:kml="http://www.opengis.net/kml/2.2" xmlns:atom="http://www.w3.org/2005/Atom">
+<Document>
+	<name>gs.kml</name>
+	<StyleMap id="inline8">
+		<Pair>
+			<key>normal</key>
+			<styleUrl>#inline9</styleUrl>
+		</Pair>
+		<Pair>
+			<key>highlight</key>
+			<styleUrl>#inline6</styleUrl>
+		</Pair>
+	</StyleMap>
+	<Style id="inline6">
+		<LineStyle>
+			<color>ff1c8c2d</color>
+		</LineStyle>
+		<PolyStyle>
+			<color>7f0079b6</color>
+		</PolyStyle>
+	</Style>
+	<Style id="inline9">
+		<LineStyle>
+			<color>ff1c8c2d</color>
+		</LineStyle>
+		<PolyStyle>
+			<color>7f0079b6</color>
+		</PolyStyle>
+	</Style>
+	<Folder>
+		<name>Grasshopper Service Territory</name>
+		<open>1</open>
+		<Placemark>
+			<name>Grasshopper Territory</name>
+			<description>Grasshopper Territory
+	 </description>
+			<styleUrl>#inline8</styleUrl>
+			<gx:balloonVisibility>1</gx:balloonVisibility>
+			<Polygon>
+				<tessellate>1</tessellate>
+				<outerBoundaryIs>
+					<LinearRing>
+						<coordinates>
+							-83.11472959893064,42.12647707933954,0 -83.07587214536713,41.99161989061616,0 -82.8806056052769,41.96439691364287,0 -82.6740181636044,42.0293837528664,0 -82.55158146690619,41.97828338171937,0 -81.2951790843659,42.64660288113865,0 -80.81537110084634,42.63395750902397,0 -80.61974700577869,42.55484909851283,0 -80.44670331158625,42.57477666580541,0 -80.20250259398495,42.76331129578701,0 -78.92244950940005,42.86080872953671,0 -79.08858128899826,43.26793870331792,0 -79.34378703044693,43.17594935243905,0 -79.73145767605985,43.24473516392162,0 -79.74804755589665,43.29906595877626,0 -79.46827547397152,43.5978724141003,0 -77.66488246127817,44.01220373491261,0 -77.11699515595475,43.82454810356359,0 -76.84844361737147,43.93292902598862,0 -76.7946095973215,44.09936922460144,0 -76.42103705117097,44.10138207551262,0 -75.96616642047621,44.35662209119093,0 -76.58975418494012,44.83228566248006,0 -78.41837483407598,44.38133933918414,0 -78.91342587924262,44.68857497681211,0 -79.39161696113212,44.79587935288051,0 -79.89014115497461,44.41955880572048,0 -79.88853247689005,44.15637735371139,0 -81.42312636215551,43.13680082269094,0 -82.40747207707391,43.01765076931292,0 -82.50219331798537,42.78813566350306,0 -82.59250546100422,42.51715727160609,0 -83.1112461652048,42.2912031468486,0 -83.11472959893064,42.12647707933954,0 
+						</coordinates>
+					</LinearRing>
+				</outerBoundaryIs>
+			</Polygon>
+		</Placemark>
+	</Folder>
+</Document>
+</kml>
