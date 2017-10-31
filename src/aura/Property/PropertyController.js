@@ -31,13 +31,13 @@
         ref: null
       }
     ]);
-    component.set("v.thekmllayers", JSON.stringify(component.get("v.kmlLayers")));
+    component.set("v.DEBUG_kmlLayers", JSON.stringify(component.get("v.kmlLayers")));
   },
 
   handleAttributeUpdate: function(component, event, helper) {
-    component.set("v.eventdata", JSON.stringify(event.getParam("record")));
-    component.set("v.thesimplerecord", JSON.stringify(component.get("v.record")));
-    component.set("v.thefullrecord", JSON.stringify(component.get("v.fullRecord")));
+    component.set("v.DEBUG_eventData", JSON.stringify(event.getParam("record")));
+    component.set("v.DEBUG_record", JSON.stringify(component.get("v.record")));
+    component.set("v.DEBUG_fullRecord", JSON.stringify(component.get("v.fullRecord")));
     component.set("v.record", event.getParam("record"));
     let simple = component.get("v.record");
     let full = component.get("v.fullRecord");
@@ -54,7 +54,7 @@
   },
 
   handleSaveRecord: function(component, event, helper) {
-    component.set("v.saverecordevent", "save record event received");
+    component.set("v.DEBUG_saveRecordEvent", "save record event received");
     component.find("forceRecord").saveRecord($A.getCallback(function(saveResult) {
       if (saveResult.state === "SUCCESS" || saveResult.state === "DRAFT") {
         // display below button 'Success'
@@ -71,7 +71,7 @@
         //TODO: use UI message to show this
         console.log('Unknown problem, state: ' + saveResult.state + ', error: ' + JSON.stringify(saveResult.error));
       }
-      component.set("v.saverecordresults", saveResult.state)
+      component.set("v.DEBUG_saveRecordResults", saveResult.state)
     }));
   },
 
@@ -84,9 +84,8 @@
     else if (changeType === "REMOVED") { /* handle record removal */ }
     else if (changeType === "CHANGED") {
       /* handle record change; reloadRecord will cause you to lose your current record, including any changes you’ve made */
-
       let changedFields = eventParams.changedFields;
-      component.set("v.changedfields", JSON.stringify(changedFields));
+      component.set("v.DEBUG_changedFields", JSON.stringify(changedFields));
       /* component.find("forceRecord").reloadRecord(); */
     }
   },

@@ -6,14 +6,14 @@
   <aura:attribute name="record" type="Object" />
   <aura:attribute name="fullRecord" type="Object" />
   <aura:attribute name="recordError" type="String" />
-  <aura:attribute name="eventdata" type="String" default="Nada"/>
-  <aura:attribute name="saverecordevent" type="String" default="False"/>
-  <aura:attribute name="saverecordresults" type="String" default="NAda"/>
-  <aura:attribute name="recordupdatedchangetype" type="String" default="NAda"/>
-  <aura:attribute name="changedfields" type="String" default="NAda"/>
-  <aura:attribute name="thesimplerecord" type="String" default="NAda"/>
-  <aura:attribute name="thefullrecord" type="String" default="NAda"/>
-  <aura:attribute name="thekmllayers" type="String" />
+  <aura:attribute name="DEBUG_eventData" type="String" default="Nada"/>
+  <aura:attribute name="DEBUG_saveRecordEvent" type="String" default="Nada"/>
+  <aura:attribute name="DEBUG_saveRecordResults" type="String" default="Nada"/>
+  <aura:attribute name="DEBUG_recordUpdatedChangeType" type="String" default="Nada"/>
+  <aura:attribute name="DEBUG_changedRields" type="String" default="Nada"/>
+  <aura:attribute name="DEBUG_record" type="String" default="Nada"/>
+  <aura:attribute name="DEBUG_fullRecord" type="String" default="Nada"/>
+  <aura:attribute name="DEBUG_kmlLayers" type="String" />
 
   <aura:handler name="init" value="{! this }" action="{! c.doInit }" />
   <aura:handler name="updateAttributes" event="c:PropertyAttributeUpdate" action="{! c.handleAttributeUpdate }" />
@@ -33,12 +33,12 @@
   <div class="c-container">
 
   <p><b>Property.cmp</b></p>
-  <p><b>kml layers:</b> {!v.thekmllayers}</p>
-  <p><b>save record event:</b> {!v.saverecordevent}</p>
-  <p><b>save record results:</b> {!v.saverecordresults}</p>
-  <p><b>record updated changeType:</b> {!v.recordupdatedchangetype}</p>
-  <p><b>changed fields:</b> {!v.changedfields}</p>
-  <p><b>event data:</b> {!v.eventdata}</p>
+  <p><b>kml layers:</b> {!v.DEBUG_kmlLayers}</p>
+  <p><b>save record event:</b> {!v.DEBUG_saveRecordEvent}</p>
+  <p><b>save record results:</b> {!v.DEBUG_saveRecordResults}</p>
+  <p><b>record updated changeType:</b> {!v.DEBUG_recordUpdatedChangeType}</p>
+  <p><b>changed fields:</b> {!v.DEBUG_changedFields}</p>
+  <p><b>event data:</b> {!v.DEBUG_eventData}</p>
 
     <lightning:layout multipleRows="true" verticalAlign="start" >
 
@@ -60,7 +60,7 @@
         <c:PropertyDetails
           buttonDisabled="{!v.buttonDisabled}"
           record="{! v.record }"
-          thekmllayers="{!v.thekmllayers}"
+          DEBUG_kmlLayers="{!v.DEBUG_kmlLayers}"
           />
       </lightning:layoutItem>
 

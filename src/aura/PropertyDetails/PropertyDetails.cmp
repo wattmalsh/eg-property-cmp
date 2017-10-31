@@ -2,7 +2,7 @@
 
   <aura:attribute name="record" type="Object" />
   <aura:attribute name="buttonDisabled" type="String" />
-  <aura:attribute name="thekmllayers" type="String" />
+  <aura:attribute name="DEBUG_kmlLayers" type="String" />
   <!-- "Id,Name,Street,City,State,Country,Postal Code,Latitude,Longitude" -->
 
   <aura:registerEvent name="saveRecord" type="c:PropertySaveRecord" />
@@ -14,7 +14,7 @@
     <aura:set attribute="actions" >
       <lightning:button label="Update Record" onclick="{! c.handleUpdateRecordClick }" disabled="{! v.buttonDisabled }"/>
     </aura:set>
-    <p><b>kml layers: </b>{!v.thekmllayers}</p>
+    <p><b>kml layers: </b>{!v.DEBUG_kmllayers}</p>
     <p><strong>lat: </strong>{! v.record.Latitude }</p>
     <p><strong>lng: </strong>{! v.record.Longitude }</p>
     <p><strong>Closest matching address:</strong></p>
