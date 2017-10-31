@@ -4,6 +4,7 @@
   <aura:attribute name="markerInOriginalPos" type="Boolean" default="true" />
   <aura:attribute name="callResetRecordMethod" type="Boolean" default="false" />
   <aura:attribute name="kmlLayers" type="Object[]" />
+  <aura:attribute name="address" type="String" />
   <aura:attribute name="record" type="Object" />
   <aura:attribute name="fullRecord" type="Object" />
   <aura:attribute name="recordError" type="String" />
@@ -17,7 +18,7 @@
   <aura:attribute name="DEBUG_kmlLayers" type="String" />
 
   <aura:handler name="init" value="{! this }" action="{! c.doInit }" />
-  <aura:handler name="updateAttributes" event="c:PropertyAttributeUpdate" action="{! c.handleAttributeUpdate }" />
+  <aura:handler name="updateRecord" event="c:PropertyUpdateRecord" action="{! c.handleUpdateRecord }" />
   <aura:handler name="saveRecord" event="c:PropertySaveRecord" action="{! c.handleSaveRecord }" />
   <aura:handler name="resetRecord" event="c:PropertyResetRecord" action="{! c.handleResetRecord }" />
 
@@ -48,6 +49,7 @@
         <c:PropertyMap
           aura:id="propertyMapCmp"
           vfHost="{# v.vfHost }"
+          address="{! v.address }"
           record="{! v.record }"
           kmlLayers="{! v.kmlLayers }"
           />
@@ -62,6 +64,7 @@
       <lightning:layoutItem size="12" >
         <c:PropertyDetails
           markerInOriginalPos="{!v.markerInOriginalPos}"
+          address="{! v.address }"
           record="{! v.record }"
           DEBUG_kmlLayers="{!v.DEBUG_kmlLayers}"
           />

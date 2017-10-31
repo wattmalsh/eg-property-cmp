@@ -7,7 +7,7 @@
     <members>PropertyMap</members>
     <members>PropertyOptions</members>
     <members>PropertyDetails</members>
-    <members>PropertyAttributeUpdate</members>
+    <members>PropertyUpdateRecord</members>
     <members>PropertySaveRecord</members>
     <members>PropertyResetRecord</members>
     <name>AuraDefinitionBundle</name>

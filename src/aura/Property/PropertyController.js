@@ -34,7 +34,7 @@
     component.set("v.DEBUG_kmlLayers", JSON.stringify(component.get("v.kmlLayers")));
   },
 
-  handleAttributeUpdate: function(component, event, helper) {
+  handleUpdateRecord: function(component, event, helper) {
     component.set("v.DEBUG_eventData", JSON.stringify(event.getParam("record")));
     component.set("v.DEBUG_record", JSON.stringify(component.get("v.record")));
     component.set("v.DEBUG_fullRecord", JSON.stringify(component.get("v.fullRecord")));
@@ -51,6 +51,7 @@
     component.set("v.fullRecord", full)
     // set markerInOriginalPos to "false"
     component.set("v.markerInOriginalPos", "false");
+    helper.getAddress(component);
   },
 
   handleSaveRecord: function(component, event, helper) {
@@ -79,10 +80,12 @@
     component.set("v.DEBUG_recordUpdatedChangeType", changeType)
     if (changeType === "ERROR") { /* handle error; do this first! */ }
     else if (changeType === "LOADED") {
+      let record = component.get("v.record");
+      helper.getAddress(component);
       // if triggered by c.handleResetRecord
       if ( component.get("v.callResetRecordMethod") ) {
         let childComponent = component.find("propertyMapCmp");
-        childComponent.resetRecord(component.get("v.record"));
+        childComponent.resetRecord();
         component.set("v.callResetRecordMethod", "false");
       }
     }

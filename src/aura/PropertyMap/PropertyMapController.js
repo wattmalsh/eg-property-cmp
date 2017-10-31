@@ -13,13 +13,15 @@
           name: "initResponse",
           payload: {
             record: component.get("v.record"),
+            address: component.get("v.address"),
             layers: component.get("v.kmlLayers")
           }
         }
         helper.sendToVF(component, message);
       }
-      if ( event.data.name === "marker dragend" ) {
-        helper.sendToParent(component, { record: event.data.record });
+      if ( event.data.name === "updateRecord" ) {
+        let params = { record: event.data.record, address: event.data.address };
+        helper.sendToParent(component, params);
       }
     }, false);
   },

@@ -45,11 +45,11 @@
           let data = JSON.parse(e.data);
 
           if (data.name === "initResponse") {
+            address = data.payload.address;
             // handle lead record
             record = data.payload.record;
             record.Latitude = Number(record.Latitude);
             record.Longitude = Number(record.Longitude);
-            address = `${record.Street} ${record.City}, ${record.State} ${record.Country} ${record.PostalCode}`;
             map.setCenter({ lat: record.Latitude, lng: record.Longitude});
             initMarker();
             // handle kml layers
@@ -59,10 +59,11 @@
           }
           if (data.name === "resetRecord") {
             document.getElementById("DEBUG_resetRecordData").innerHTML = JSON.stringify(data)
+            address = data.payload.address;
             record = data.payload.record;
             record.Latitude = Number(record.Latitude);
             record.Longitude = Number(record.Longitude);
-            address = `${record.Street} ${record.City}, ${record.State} ${record.Country} ${record.PostalCode}`;
+            address = data.payload.address;
             let latLng = { lat: record.Latitude, lng: record.Longitude};
             map.setCenter(latLng);
             marker.setPosition(latLng)
@@ -110,6 +111,7 @@
           });
 
           markerInfoWindow = new google.maps.InfoWindow({
+//TODO:
             content: `
             <div class="popup">
             <p>${record.Name}</p>
@@ -123,18 +125,20 @@
           });
 
           marker.addListener('dragend', function() {
-          /* marker.addListener('position_changed', function() { */
             let latLng = marker.getPosition();
-            // set Street, City, State, Country, PostalCode
-            geocodeLatLng(latLng, record);
             record.Latitude = latLng.lat();
             record.Longitude = latLng.lng();
-            let message = { name: "marker dragend", record: record};
+            geocodeLatLng(latLng, record);
+            let message = { name: "updateRecord", record: record };
             sendToLC(message);
           });
 
-          markerInfoWindow.addListener('closeclick', function() {
-            map.setCenter(marker.getPosition());
+          marker.addListener('position_changed', function() {
+            let latLng = marker.getPosition();
+            record.Latitude = latLng.lat();
+            record.Longitude = latLng.lng();
+            let message = { name: "updateRecord", record: record};
+            sendToLC(message);
           });
 
         }
@@ -151,7 +155,7 @@
               record.PostalCode = split[2].split(/ /)[2];
               record.Country = split[3];
             } else {
-              address = 'Cannot determine an address at this location';
+              address = 'Geocoder failed due to: ' + status;
               record.Street = 'null';
               record.City = 'null';
               record.State = 'null'

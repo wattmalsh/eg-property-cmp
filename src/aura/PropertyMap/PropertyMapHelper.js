@@ -6,9 +6,9 @@
     vfWindow.postMessage(JSON.stringify(message), vfOrigin);
   },
 
-  sendToParent: function(component, params) {
-    let compEvent = component.getEvent("updateAttributes");
-    compEvent.setParams(params);
+  sendToParent: function(component, record) {
+    let compEvent = component.getEvent("updateRecord");
+    compEvent.setParams(record);
     compEvent.fire();
   },
 

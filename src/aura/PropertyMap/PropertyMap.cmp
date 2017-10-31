@@ -1,6 +1,7 @@
 <aura:component implements="flexipage:availableForAllPageTypes" access="global">
 
   <aura:attribute name="vfHost" type="String" />
+  <aura:attribute name="address" type="String" />
   <aura:attribute name="record" type="Object" />
   <!-- fields="Id,Name,Street,City,State,Country,PostalCode,Latitude,Longitude" -->
   <aura:attribute name="kmlLayers" type="Object[]" />
@@ -8,7 +9,7 @@
 
   <aura:handler name="init" value="{! this }" action="{! c.doInit }" />
 
-  <aura:registerEvent name="updateAttributes" type="c:PropertyAttributeUpdate" />
+  <aura:registerEvent name="updateRecord" type="c:PropertyUpdateRecord" />
 
   <aura:method name="resetRecord" action="{! c.executeResetRecord }" >
   </aura:method>
