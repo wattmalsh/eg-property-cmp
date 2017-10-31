@@ -49,17 +49,15 @@
     full.fields.Latitude.value = simple.Latitude;
     full.fields.Longitude.value = simple.Longitude;
     component.set("v.fullRecord", full)
-    // set disable on buttonDisabled to false
-    component.set("v.buttonDisabled", "false");
+    // set markerInOriginalPos to "false"
+    component.set("v.markerInOriginalPos", "false");
   },
 
   handleSaveRecord: function(component, event, helper) {
     component.set("v.DEBUG_saveRecordEvent", "save record event received");
     component.find("forceRecord").saveRecord($A.getCallback(function(saveResult) {
       if (saveResult.state === "SUCCESS" || saveResult.state === "DRAFT") {
-        // display below button 'Success'
-        // change button style to 'disabled'
-        component.set("v.buttonDisabled", "true");
+        component.set("v.markerInOriginalPos", "false");
         console.log("Save completed successfully.");
       } else if (saveResult.state === "INCOMPLETE") {
         //TODO: use UI message to show this
@@ -78,7 +76,7 @@
   recordUpdated: function(component, event, helper) {
     let eventParams = event.getParams();
     let changeType = eventParams.changeType;
-    component.set("v.recordupdatedchangetype", changeType)
+    component.set("v.DEBUG_recordUpdatedChangeType", changeType)
     if (changeType === "ERROR") { /* handle error; do this first! */ }
     else if (changeType === "LOADED") { /* handle record load */ }
     else if (changeType === "REMOVED") { /* handle record removal */ }
