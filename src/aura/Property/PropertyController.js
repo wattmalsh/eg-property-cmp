@@ -49,7 +49,7 @@
     full.fields.Latitude.value = simple.Latitude;
     full.fields.Longitude.value = simple.Longitude;
     component.set("v.fullRecord", full)
-    component.set("v.markerInOriginalPos", "false");
+    component.set("v.markerInOriginalPos", false);
     component.set("v.address", helper.getAddress(component));
   },
 
@@ -57,7 +57,7 @@
     component.set("v.DEBUG_saveRecordEvent", "save record event received");
     component.find("forceRecord").saveRecord($A.getCallback(function(saveResult) {
       if (saveResult.state === "SUCCESS" || saveResult.state === "DRAFT") {
-        component.set("v.markerInOriginalPos", "true");
+        component.set("v.markerInOriginalPos", true);
         console.log("Save completed successfully.");
       } else if (saveResult.state === "INCOMPLETE") {
         //TODO: use UI message to show this
@@ -81,10 +81,12 @@
     else if (changeType === "LOADED") {
       let record = component.get("v.record");
       component.set("v.address", helper.getAddress(component));
+      let propertyDetailsCmp = component.find("propertyDetailsCmp");
+      propertyDetailsCmp.setOriginalRecord();
       // if triggered by c.handleResetRecord
       if ( component.get("v.callResetRecordMethod") ) {
-        let childComponent = component.find("propertyMapCmp");
-        childComponent.resetRecord();
+        let propertyMapCmp = component.find("propertyMapCmp");
+        propertyMapCmp.resetRecord();
         component.set("v.callResetRecordMethod", "false");
       }
     }
@@ -92,12 +94,14 @@
     else if (changeType === "CHANGED") {
       let changedFields = eventParams.changedFields;
       component.set("v.DEBUG_changedFields", JSON.stringify(changedFields));
+      let propertyDetailsCmp = component.find("propertyDetailsCmp");
+      propertyDetailsCmp.setOriginalRecord();
     }
   },
 
   handleResetRecord: function(component, event, helper) {
     // calling the resetRecord method directly after reloadRecord invokes the method before the record has been reset.
-    component.set("v.markerInOriginalPos", "true");
+    component.set("v.markerInOriginalPos", true);
     component.set("v.callResetRecordMethod", "true");
     component.find("forceRecord").reloadRecord();
   },

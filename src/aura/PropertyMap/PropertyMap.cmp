@@ -3,7 +3,6 @@
   <aura:attribute name="vfHost" type="String" />
   <aura:attribute name="address" type="String" />
   <aura:attribute name="record" type="Object" />
-  <!-- fields="Id,Name,Street,City,State,Country,PostalCode,Latitude,Longitude" -->
   <aura:attribute name="kmlLayers" type="Object[]" />
   <aura:attribute name="DEBUG_resetRecordMethodCalled" type="String" default="Nada" />
 

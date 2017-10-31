@@ -2,28 +2,46 @@
 
   <aura:attribute name="address" type="String" />
   <aura:attribute name="record" type="Object" />
+  <aura:attribute name="originalAddress" type="String" />
+  <aura:attribute name="originalRecord" type="Object" />
   <aura:attribute name="markerInOriginalPos" type="Boolean" />
   <aura:attribute name="DEBUG_kmlLayers" type="String" />
-  <!-- "Id,Name,Street,City,State,Country,Postal Code,Latitude,Longitude" -->
 
   <aura:registerEvent name="saveRecord" type="c:PropertySaveRecord" />
   <aura:registerEvent name="resetRecord" type="c:PropertyResetRecord" />
 
+  <aura:method name="setOriginalRecord" action="{! c.executeSetOriginalRecord }" />
+
+  <p><b>kml layers: </b>{!v.DEBUG_kmlLayers}</p>
   <lightning:card>
     <aura:set attribute="title" >
       {! v.record.Name }
     </aura:set>
     <aura:set attribute="actions" >
-      <lightning:button label="Save Record" onclick="{! c.handleSaveRecordClick }" disabled="{! v.markerInOriginalPos }"/>
+      <lightning:button label="Save Record" onclick="{! c.handleSaveRecordClick }" disabled="{! v.markerInOriginalPos?'true':'' }"/>
     </aura:set>
-    <p><b>DEBUG. markerinOriginalPos: </b>{!v.markerInOriginalPos}</p>
-    <p><b>kml layers: </b>{!v.DEBUG_kmlLayers}</p>
-    <p><strong>lat: </strong>{! v.record.Latitude }</p>
-    <p><strong>lng: </strong>{! v.record.Longitude }</p>
-    <p><strong>Closest matching address:</strong></p>
-    <p>{! v.address }</p>
+    <!-- body -->
+    <lightning:layout verticalAlign="center" horizontalAlign="space" >
+      <lightning:layoutItem>
+
+        <lightning:tile class="{! v.markerInOriginalPos?'':'slds-text-color_weak' }" >
+          <p><strong>lat: </strong>{! v.originalRecord.Latitude }</p>
+          <p><strong>lng: </strong>{! v.originalRecord.Longitude }</p>
+          <p><strong>Address:</strong></p>
+          <p>{! v.originalAddress }</p>
+        </lightning:tile>
+      </lightning:layoutItem>
+      <lightning:layoutItem>
+        <lightning:tile class="{! v.markerInOriginalPos?'slds-hidden':'' }" >
+          <p><strong>lat: </strong>{! v.record.Latitude }</p>
+          <p><strong>lng: </strong>{! v.record.Longitude }</p>
+          <p><strong>Closest matching address:</strong></p>
+          <p>{! v.address }</p>
+        </lightning:tile>
+      </lightning:layoutItem>
+    </lightning:layout>
     <aura:set attribute="footer" >
-      <lightning:button label="Reset Record" onclick="{! c.handleResetRecordClick }" disabled="{! v.markerInOriginalPos }"/>
+      <lightning:button label="Reset Record" onclick="{! c.handleResetRecordClick }" disabled="{! v.markerInOriginalPos?'true':'' }"/>
     </aura:set>
   </lightning:card>
 

@@ -25,7 +25,7 @@
   <force:recordData
     aura:id="forceRecord"
     recordId="{! v.recordId }"
-    fields="Id,Name,Street,City,State,Country,PostalCode,Latitude,Longitude"
+    fields="Name,Street,City,State,Country,PostalCode,Latitude,Longitude"
     targetError="{! v.recordError }"
     targetRecord="{! v.fullRecord }"
     targetFields="{! v.record }"
@@ -63,6 +63,7 @@
 
       <lightning:layoutItem size="12" >
         <c:PropertyDetails
+          aura:id="propertyDetailsCmp"
           markerInOriginalPos="{!v.markerInOriginalPos}"
           address="{! v.address }"
           record="{! v.record }"
