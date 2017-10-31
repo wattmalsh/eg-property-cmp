@@ -4,10 +4,18 @@
   <aura:attribute name="record" type="Object" />
   <!-- fields="Id,Name,Street,City,State,Country,PostalCode,Latitude,Longitude" -->
   <aura:attribute name="kmlLayers" type="Object[]" />
+  <aura:attribute name="DEBUG_resetRecordMethodCalled" type="String" default="Nada" />
 
   <aura:handler name="init" value="{! this }" action="{! c.doInit }" />
 
   <aura:registerEvent name="updateAttributes" type="c:PropertyAttributeUpdate" />
+
+  <aura:method name="resetRecord" action="{! c.executeResetRecord }" >
+  </aura:method>
+
+  <p><strong>PropertyMap.cmp</strong></p>
+  <p>resetRecord method called: {! v.DEBUG_resetRecordMethodCalled }</p>
+  <p><strong>v.record.Street: </strong>{! v.record.Street}</p>
 
   <iframe aura:id="vfFrame" src="{! 'https://' + v.vfHost + '/apex/PropertyMap' }"
     frameborder="0" width="100%" height="376" />

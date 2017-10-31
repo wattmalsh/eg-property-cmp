@@ -1,7 +1,8 @@
 <aura:component implements="force:hasRecordId,flexipage:availableForRecordHome">
 
   <aura:attribute name="vfHost" type="String" default="energygeeks-matt-dev-ed--c.na73.visual.force.com" />
-  <aura:attribute name="markerInOriginalPos" type="String" default="true" />
+  <aura:attribute name="markerInOriginalPos" type="Boolean" default="true" />
+  <aura:attribute name="callResetRecordMethod" type="Boolean" default="false" />
   <aura:attribute name="kmlLayers" type="Object[]" />
   <aura:attribute name="record" type="Object" />
   <aura:attribute name="fullRecord" type="Object" />
@@ -18,6 +19,7 @@
   <aura:handler name="init" value="{! this }" action="{! c.doInit }" />
   <aura:handler name="updateAttributes" event="c:PropertyAttributeUpdate" action="{! c.handleAttributeUpdate }" />
   <aura:handler name="saveRecord" event="c:PropertySaveRecord" action="{! c.handleSaveRecord }" />
+  <aura:handler name="resetRecord" event="c:PropertyResetRecord" action="{! c.handleResetRecord }" />
 
   <force:recordData
     aura:id="forceRecord"
@@ -44,6 +46,7 @@
 
       <lightning:layoutItem size="12" >
         <c:PropertyMap
+          aura:id="propertyMapCmp"
           vfHost="{# v.vfHost }"
           record="{! v.record }"
           kmlLayers="{! v.kmlLayers }"

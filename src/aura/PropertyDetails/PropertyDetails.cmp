@@ -1,11 +1,12 @@
 <aura:component>
 
   <aura:attribute name="record" type="Object" />
-  <aura:attribute name="markerInOriginalPos" type="String" />
+  <aura:attribute name="markerInOriginalPos" type="Boolean" />
   <aura:attribute name="DEBUG_kmlLayers" type="String" />
   <!-- "Id,Name,Street,City,State,Country,Postal Code,Latitude,Longitude" -->
 
   <aura:registerEvent name="saveRecord" type="c:PropertySaveRecord" />
+  <aura:registerEvent name="resetRecord" type="c:PropertyResetRecord" />
 
   <lightning:card>
     <aura:set attribute="title" >
@@ -20,7 +21,7 @@
     <p><strong>Closest matching address:</strong></p>
     <p>{!v.record.Street}, {!v.record.City}, {!v.record.State} {!v.record.PostalCode}, {!v.record.Country}</p>
     <aura:set attribute="footer" >
-      Reset
+      <lightning:button label="Reset Record" onclick="{! c.handleResetRecordClick }" disabled="{! v.markerInOriginalPos }"/>
     </aura:set>
   </lightning:card>
 

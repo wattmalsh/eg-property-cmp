@@ -24,4 +24,14 @@
     }, false);
   },
 
+  executeResetRecord: function(component, event, helper) {
+    let message = {
+      name: "resetRecord",
+      payload: {
+        record: component.get("v.record"),
+      }
+    }
+    helper.sendToVF(component, message);
+  },
+
 })

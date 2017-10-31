@@ -8,6 +8,7 @@
       </style>
     </head>
     <body>
+      <p><b>record from markerReset method: </b><span id="DEBUG_resetRecordData">Nada</span></p>
       <div id="map"/>
       <script>
 
@@ -51,23 +52,20 @@
             address = `${record.Street} ${record.City}, ${record.State} ${record.Country} ${record.PostalCode}`;
             map.setCenter({ lat: record.Latitude, lng: record.Longitude});
             initMarker();
-            // check for lead record / google map discrepancies
-            /* if (address !== geocodeLatLng(latLng)) { */
-              /* //TODO: alert that addresses don't match up and ask user to remedy */
-            /* } */
             // handle kml layers
             layers = data.payload.layers;
             createLayerReferences(layers);
             toggleLayers(layers);
           }
-
-          if (data.name === "recordUpdateSuccess") {
-            //TODO: use CSS to notify user record successfully updated in database
-          }
-
-          if (data.name === "kmlUpdate") {
-            /* layers = message.data; */
-            /* toggleLayers(layers); */
+          if (data.name === "resetRecord") {
+            document.getElementById("DEBUG_resetRecordData").innerHTML = JSON.stringify(data)
+            record = data.payload.record;
+            record.Latitude = Number(record.Latitude);
+            record.Longitude = Number(record.Longitude);
+            address = `${record.Street} ${record.City}, ${record.State} ${record.Country} ${record.PostalCode}`;
+            let latLng = { lat: record.Latitude, lng: record.Longitude};
+            map.setCenter(latLng);
+            marker.setPosition(latLng)
           }
 
         }, false);
@@ -125,6 +123,7 @@
           });
 
           marker.addListener('dragend', function() {
+          /* marker.addListener('position_changed', function() { */
             let latLng = marker.getPosition();
             // set Street, City, State, Country, PostalCode
             geocodeLatLng(latLng, record);

@@ -78,14 +78,26 @@
     let changeType = eventParams.changeType;
     component.set("v.DEBUG_recordUpdatedChangeType", changeType)
     if (changeType === "ERROR") { /* handle error; do this first! */ }
-    else if (changeType === "LOADED") { /* handle record load */ }
+    else if (changeType === "LOADED") {
+      // if triggered by c.handleResetRecord
+      if ( component.get("v.callResetRecordMethod") ) {
+        let childComponent = component.find("propertyMapCmp");
+        childComponent.resetRecord(component.get("v.record"));
+        component.set("v.callResetRecordMethod", "false");
+      }
+    }
     else if (changeType === "REMOVED") { /* handle record removal */ }
     else if (changeType === "CHANGED") {
-      /* handle record change; reloadRecord will cause you to lose your current record, including any changes you’ve made */
       let changedFields = eventParams.changedFields;
       component.set("v.DEBUG_changedFields", JSON.stringify(changedFields));
-      /* component.find("forceRecord").reloadRecord(); */
     }
+  },
+
+  handleResetRecord: function(component, event, helper) {
+    component.set("v.markerInOriginalPos", "true");
+    // calling the resetRecord method directly after reloadRecord invokes the method before teh record has been reset. solution is to call the method from recordUpdated where changetype === "LOADED"
+    component.set("v.callResetRecordMethod", "true");
+    component.find("forceRecord").reloadRecord();
   },
 
 })
