@@ -49,16 +49,15 @@
     full.fields.Latitude.value = simple.Latitude;
     full.fields.Longitude.value = simple.Longitude;
     component.set("v.fullRecord", full)
-    // set markerInOriginalPos to "false"
     component.set("v.markerInOriginalPos", "false");
-    helper.getAddress(component);
+    component.set("v.address", helper.getAddress(component));
   },
 
   handleSaveRecord: function(component, event, helper) {
     component.set("v.DEBUG_saveRecordEvent", "save record event received");
     component.find("forceRecord").saveRecord($A.getCallback(function(saveResult) {
       if (saveResult.state === "SUCCESS" || saveResult.state === "DRAFT") {
-        component.set("v.markerInOriginalPos", "false");
+        component.set("v.markerInOriginalPos", "true");
         console.log("Save completed successfully.");
       } else if (saveResult.state === "INCOMPLETE") {
         //TODO: use UI message to show this
@@ -81,7 +80,7 @@
     if (changeType === "ERROR") { /* handle error; do this first! */ }
     else if (changeType === "LOADED") {
       let record = component.get("v.record");
-      helper.getAddress(component);
+      component.set("v.address", helper.getAddress(component));
       // if triggered by c.handleResetRecord
       if ( component.get("v.callResetRecordMethod") ) {
         let childComponent = component.find("propertyMapCmp");
@@ -97,8 +96,8 @@
   },
 
   handleResetRecord: function(component, event, helper) {
+    // calling the resetRecord method directly after reloadRecord invokes the method before the record has been reset.
     component.set("v.markerInOriginalPos", "true");
-    // calling the resetRecord method directly after reloadRecord invokes the method before teh record has been reset. solution is to call the method from recordUpdated where changetype === "LOADED"
     component.set("v.callResetRecordMethod", "true");
     component.find("forceRecord").reloadRecord();
   },
