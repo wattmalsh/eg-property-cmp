@@ -14,8 +14,9 @@
       {! v.record.Name }
     </aura:set>
     <aura:set attribute="actions" >
-      <lightning:button label="Update Record" onclick="{! c.handleUpdateRecordClick }" disabled="{! v.markerInOriginalPos }"/>
+      <lightning:button label="Save Record" onclick="{! c.handleSaveRecordClick }" disabled="{! v.markerInOriginalPos }"/>
     </aura:set>
+    <p><b>DEBUG. markerinOriginalPos: </b>{!v.markerInOriginalPos}</p>
     <p><b>kml layers: </b>{!v.DEBUG_kmlLayers}</p>
     <p><strong>lat: </strong>{! v.record.Latitude }</p>
     <p><strong>lng: </strong>{! v.record.Longitude }</p>
