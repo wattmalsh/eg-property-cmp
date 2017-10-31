@@ -111,7 +111,7 @@
           });
 
           markerInfoWindow = new google.maps.InfoWindow({
-//TODO:
+          //TODO: Make address dynamic
             content: `
             <div class="popup">
             <p>${record.Name}</p>
@@ -124,21 +124,34 @@
             markerInfoWindow.open(map, marker);
           });
 
+          marker.addListener('dragstart', function() {
+            draggingMarker = true;
+          });
+
           marker.addListener('dragend', function() {
+            draggingMarker = false;
             let latLng = marker.getPosition();
             record.Latitude = latLng.lat();
             record.Longitude = latLng.lng();
             geocodeLatLng(latLng, record);
-            let message = { name: "updateRecord", record: record };
+            let message = {
+              name: "updateRecord",
+              record: record
+            };
             sendToLC(message);
           });
 
           marker.addListener('position_changed', function() {
-            let latLng = marker.getPosition();
-            record.Latitude = latLng.lat();
-            record.Longitude = latLng.lng();
-            let message = { name: "updateRecord", record: record};
-            sendToLC(message);
+            if ( draggingMarker ) {
+              let latLng = marker.getPosition();
+              record.Latitude = latLng.lat();
+              record.Longitude = latLng.lng();
+              let message = {
+                name: "updateRecord",
+                record: record
+              };
+              sendToLC(message);
+            }
           });
 
         }

@@ -20,7 +20,10 @@
         helper.sendToVF(component, message);
       }
       if ( event.data.name === "updateRecord" ) {
-        let params = { record: event.data.record, address: event.data.address };
+        let params = {
+          record: event.data.record,
+          address: event.data.address
+        };
         helper.sendToParent(component, params);
       }
     }, false);
