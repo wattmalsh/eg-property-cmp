@@ -324,6 +324,8 @@
   </macrodef>
 
   <!-- TODO: -filterAllDeployDirs does not at this moment filter members, it only handles  the wildcard * -->
+  <!-- TODO: change deploy procedure to use symbolic links of desired directories into a "debploy" directory -->
+  <!-- TODO: list files/directories to deploy in logs -->
   <macrodef name="deploy" >
     <attribute name="deployRoot" />
     <attribute name="pkg" />
@@ -378,6 +380,8 @@
   <target name="retrieveProduction" depends="-init" description="" >
     <retrieve retrieveTargetBase="${dir.retrieve}" pkg="${file.retrieve.pkg}" />
   </target>
+
+  <!-- TODO: add target deployToDevEnvironment -->
 
   <target name="deployToSandbox" depends="-init" description="" >
     <deploy deployRoot="${dir.deploy}" pkg="${file.deploy.pkg}" />
