@@ -1,9 +1,11 @@
 ({
 
   doInit: function(component, event, helper) {
-    let vfOrigin = "https://" + component.get("v.vfHost");
+    component.set("v.lcHost", window.location.hostname);
+    component.set("v.vfHost", window.location.hostname.split(".")[0]);
+
     window.addEventListener("message", function(event) {
-      if (event.origin !== vfOrigin) {
+      if ( !event.origin.match("https://" + component.get("v.vfHost")) ) {
         // Not the expected origin: reject message
         return;
       }
@@ -17,6 +19,7 @@
             layers: component.get("v.layers")
           }
         }
+        component.set("v.vfHost", event.origin.split("://")[1]);
         helper.sendToVF(component, message);
       }
       if ( event.data.name === "updateRecord" ) {

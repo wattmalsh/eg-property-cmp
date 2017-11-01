@@ -1,6 +1,5 @@
 <aura:component implements="force:hasRecordId,flexipage:availableForRecordHome">
 
-  <aura:attribute name="vfHost" type="String" default="energygeeks-matt-dev-ed--c.na73.visual.force.com" />
   <aura:attribute name="markerInOriginalPos" type="Boolean" default="true" />
   <aura:attribute name="callResetRecordMethod" type="Boolean" default="false" />
   <aura:attribute name="layers" type="Object[]" />
@@ -33,7 +32,6 @@
       <lightning:layoutItem size="12" >
         <c:PropertyMap
           aura:id="propertyMapCmp"
-          vfHost="{# v.vfHost }"
           address="{! v.address }"
           record="{! v.record }"
           layers="{! v.layers }"

@@ -11,8 +11,7 @@
       <div id="map"/>
       <script>
 
-        // let lexOrigin = 'https://{!$Currentpage.parameters.lcHost}'; // the origin (protocol + port + host)
-        let lexOrigin = 'https://energygeeks-matt-dev-ed.lightning.force.com';
+        let lexOrigin = 'https://{!$Currentpage.parameters.lcHost}';
 
         let mapEl = document.getElementById('map'),
             mapCenter = { lat: 43.646335, lng: -79.530037 }; // arbitrary initial map center in Toronto
