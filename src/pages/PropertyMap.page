@@ -52,7 +52,6 @@
             initMarker();
           }
           if (data.name === "resetRecord") {
-            document.getElementById("DEBUG_resetRecordData").innerHTML = JSON.stringify(data)
             address = data.payload.address;
             record = data.payload.record;
             record.Latitude = Number(record.Latitude);
