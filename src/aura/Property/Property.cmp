@@ -8,11 +8,15 @@
   <aura:attribute name="fullRecord" type="Object" />
   <aura:attribute name="recordError" type="String" />
 
-  <aura:handler name="init" value="{! this }" action="{! c.doInit }" />
   <aura:handler name="updateRecord" event="c:PropertyUpdateRecord" action="{! c.handleUpdateRecord }" />
   <aura:handler name="saveRecord" event="c:PropertySaveRecord" action="{! c.handleSaveRecord }" />
   <aura:handler name="resetRecord" event="c:PropertyResetRecord" action="{! c.handleResetRecord }" />
   <aura:handler name="toggleLayer" event="c:PropertyToggleLayer" action="{! c.handleToggleLayer }" />
+
+  <ltng:require
+    scripts="{!$Resource.kml_layers}"
+    afterScriptsLoaded="{! c.afterLayersScriptLoaded }"
+    />
 
   <force:recordData
     aura:id="forceRecord"

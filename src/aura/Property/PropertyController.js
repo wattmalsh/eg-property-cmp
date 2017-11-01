@@ -1,32 +1,17 @@
 ({
 
-  doInit: function(component, event, helper) {
-    component.set("v.layers", [
-      {
-        url: 'https://sites.google.com/a/energygeeks.com/mkmf/ust/ou.kml',
-        name: 'Ontario Utilities',
-        btnName: 'Ontario Utilities',
-        active: false,
-      },
-      {
-        url: 'https://sites.google.com/a/energygeeks.com/mkmf/ust/ps.kml',
-        name: 'Polaron Service Territory',
-        btnName: 'Polaron Service Territory',
-        active: false,
-      },
-      {
-        url: 'https://sites.google.com/a/energygeeks.com/mkmf/ust/gs.kml',
-        name: 'Grasshopper Service Territory',
-        btnName: 'Grasshopper Service Territory',
-        active: false,
-      },
-      {
-        url: 'https://sites.google.com/a/energygeeks.com/mkmf/ust/us.kml',
-        name: 'Upstream Service Territory',
-        btnName: 'Upstream Service Territory',
-        active: false,
-      }
-    ]);
+  afterLayersScriptLoaded: function(component, event, helper) {
+    let layers = [];
+    let importedLayers = globalvalues.kml_layers;
+    // $Resource.layers contains a layers object with layerName: url
+    for ( let layer in importedLayers ) {
+      layers.push({
+        name: layer,
+        url: importedLayers[layer],
+        active: false
+      })
+    }
+    component.set("v.layers", layers);
   },
 
   handleUpdateRecord: function(component, event, helper) {
