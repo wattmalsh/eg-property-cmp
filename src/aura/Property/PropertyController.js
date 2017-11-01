@@ -1,7 +1,7 @@
 ({
 
   doInit: function(component, event, helper) {
-    component.set("v.kmlLayers", [
+    component.set("v.layers", [
       {
         url: 'https://sites.google.com/a/energygeeks.com/mkmf/ust/ou.kml',
         btnName: 'Ontario Utilities',
@@ -31,7 +31,7 @@
         ref: null
       }
     ]);
-    component.set("v.DEBUG_kmlLayers", JSON.stringify(component.get("v.kmlLayers")));
+    component.set("v.DEBUG_layers", JSON.stringify(component.get("v.layers")));
   },
 
   handleUpdateRecord: function(component, event, helper) {

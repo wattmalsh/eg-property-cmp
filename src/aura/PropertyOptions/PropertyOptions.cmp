@@ -1,9 +1,9 @@
 <aura:component>
 
-  <aura:attribute name="kmlLayers" type="Object[]" />
+  <aura:attribute name="layers" type="Object[]" />
 
   <lightning:buttonGroup>
-    <aura:iteration items="1,2,3,4,5" var="item" >
+    <aura:iteration items="{! v.layers}" var="layer" >
       <lightning:button label="{! 'Label ' + item }" onclick="{! handleButtonClick }" />
     </aura:iteration>
   </lightning:buttonGroup>

@@ -14,7 +14,7 @@
           payload: {
             record: component.get("v.record"),
             address: component.get("v.address"),
-            layers: component.get("v.kmlLayers")
+            layers: component.get("v.layers")
           }
         }
         helper.sendToVF(component, message);

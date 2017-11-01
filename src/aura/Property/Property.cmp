@@ -3,7 +3,7 @@
   <aura:attribute name="vfHost" type="String" default="energygeeks-matt-dev-ed--c.na73.visual.force.com" />
   <aura:attribute name="markerInOriginalPos" type="Boolean" default="true" />
   <aura:attribute name="callResetRecordMethod" type="Boolean" default="false" />
-  <aura:attribute name="kmlLayers" type="Object[]" />
+  <aura:attribute name="layers" type="Object[]" />
   <aura:attribute name="address" type="String" />
   <aura:attribute name="record" type="Object" />
   <aura:attribute name="fullRecord" type="Object" />
@@ -15,7 +15,7 @@
   <aura:attribute name="DEBUG_changedFields" type="String" default="Nada"/>
   <aura:attribute name="DEBUG_record" type="String" default="Nada"/>
   <aura:attribute name="DEBUG_fullRecord" type="String" default="Nada"/>
-  <aura:attribute name="DEBUG_kmlLayers" type="String" />
+  <aura:attribute name="DEBUG_layers" type="String" />
 
   <aura:handler name="init" value="{! this }" action="{! c.doInit }" />
   <aura:handler name="updateRecord" event="c:PropertyUpdateRecord" action="{! c.handleUpdateRecord }" />
@@ -36,7 +36,7 @@
   <div class="c-container">
 
   <p><b>Property.cmp</b></p>
-  <p><b>kml layers:</b> {!v.DEBUG_kmlLayers}</p>
+  <p><b>layers:</b> {!v.DEBUG_layers}</p>
   <p><b>save record event:</b> {!v.DEBUG_saveRecordEvent}</p>
   <p><b>save record results:</b> {!v.DEBUG_saveRecordResults}</p>
   <p><b>record updated changeType:</b> {!v.DEBUG_recordUpdatedChangeType}</p>
@@ -51,13 +51,13 @@
           vfHost="{# v.vfHost }"
           address="{! v.address }"
           record="{! v.record }"
-          kmlLayers="{! v.kmlLayers }"
+          layers="{! v.layers }"
           />
       </lightning:layoutItem>
 
       <lightning:layoutItem size="12" >
         <c:PropertyOptions
-          kmlLayers="{! v.kmlLayers }"
+          layers="{! v.layers }"
           />
       </lightning:layoutItem>
 
@@ -67,7 +67,7 @@
           markerInOriginalPos="{!v.markerInOriginalPos}"
           address="{! v.address }"
           record="{! v.record }"
-          DEBUG_kmlLayers="{!v.DEBUG_kmlLayers}"
+          DEBUG_layers="{!v.DEBUG_layers}"
           />
       </lightning:layoutItem>
 

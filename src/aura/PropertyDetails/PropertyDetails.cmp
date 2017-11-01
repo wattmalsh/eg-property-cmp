@@ -5,14 +5,14 @@
   <aura:attribute name="originalAddress" type="String" />
   <aura:attribute name="originalRecord" type="Object" />
   <aura:attribute name="markerInOriginalPos" type="Boolean" />
-  <aura:attribute name="DEBUG_kmlLayers" type="String" />
+  <aura:attribute name="DEBUG_layers" type="String" />
 
   <aura:registerEvent name="saveRecord" type="c:PropertySaveRecord" />
   <aura:registerEvent name="resetRecord" type="c:PropertyResetRecord" />
 
   <aura:method name="setOriginalRecord" action="{! c.executeSetOriginalRecord }" />
 
-  <p><b>kml layers: </b>{!v.DEBUG_kmlLayers}</p>
+  <p><b>layers: </b>{!v.DEBUG_layers}</p>
   <lightning:card>
     <aura:set attribute="title" >
       {! v.record.Name }

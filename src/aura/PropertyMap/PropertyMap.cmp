@@ -3,7 +3,7 @@
   <aura:attribute name="vfHost" type="String" />
   <aura:attribute name="address" type="String" />
   <aura:attribute name="record" type="Object" />
-  <aura:attribute name="kmlLayers" type="Object[]" />
+  <aura:attribute name="layers" type="Object[]" />
   <aura:attribute name="DEBUG_resetRecordMethodCalled" type="String" default="Nada" />
 
   <aura:handler name="init" value="{! this }" action="{! c.doInit }" />

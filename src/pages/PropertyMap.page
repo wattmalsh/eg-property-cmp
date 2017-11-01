@@ -28,8 +28,7 @@
             mapOptions,
             marker,
             markerInfoWindow,
-            geocoder,
-            kmlLayers;
+            geocoder;
 
         function sendToLC(message) {
           parent.postMessage(message, lexOrigin);
@@ -52,7 +51,7 @@
             record.Longitude = Number(record.Longitude);
             map.setCenter({ lat: record.Latitude, lng: record.Longitude});
             initMarker();
-            // handle kml layers
+            // handle layers
             layers = data.payload.layers;
             createLayerReferences(layers);
             toggleLayers(layers);
