@@ -4,31 +4,27 @@
     component.set("v.layers", [
       {
         url: 'https://sites.google.com/a/energygeeks.com/mkmf/ust/ou.kml',
+        name: 'Ontario Utilities',
         btnName: 'Ontario Utilities',
-        displayName: 'Ontario Utilities',
-        active: true,
-        ref: null
+        active: false,
       },
       {
         url: 'https://sites.google.com/a/energygeeks.com/mkmf/ust/ps.kml',
+        name: 'Polaron Service Territory',
         btnName: 'Polaron Service Territory',
-        displayName: 'Polaron Service Territory',
-        active: true,
-        ref: null
+        active: false,
       },
       {
         url: 'https://sites.google.com/a/energygeeks.com/mkmf/ust/gs.kml',
+        name: 'Grasshopper Service Territory',
         btnName: 'Grasshopper Service Territory',
-        displayName: 'Grasshopper Service Territory',
-        active: true,
-        ref: null
+        active: false,
       },
       {
         url: 'https://sites.google.com/a/energygeeks.com/mkmf/ust/us.kml',
+        name: 'Upstream Service Territory',
         btnName: 'Upstream Service Territory',
-        displayName: 'Upstream Service Territory',
-        active: true,
-        ref: null
+        active: false,
       }
     ]);
     component.set("v.DEBUG_layers", JSON.stringify(component.get("v.layers")));
@@ -71,6 +67,20 @@
       }
       component.set("v.DEBUG_saveRecordResults", saveResult.state)
     }));
+  },
+
+  handleToggleLayer: function(component, event, helper) {
+    let layerName = event.getParam("layerName");
+    let layers = [];
+    component.get("v.layers").forEach((layer) => {layers.push(layer)});
+    for ( let i = 0; i < layers.length; i++ ) {
+      if ( layers[i].name === layerName ) {
+        layers[i].active = layers[i].active ? false : true;
+      }
+    }
+    component.set("v.layers", layers);
+    let propertyMapCmp = component.find("propertyMapCmp");
+    propertyMapCmp.toggleLayer();
   },
 
   recordUpdated: function(component, event, helper) {

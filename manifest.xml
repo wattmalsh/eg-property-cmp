@@ -10,6 +10,7 @@
     <members>PropertyUpdateRecord</members>
     <members>PropertySaveRecord</members>
     <members>PropertyResetRecord</members>
+    <members>PropertyToggleLayer</members>
     <name>AuraDefinitionBundle</name>
   </types>
   <types>

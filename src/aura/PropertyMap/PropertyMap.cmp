@@ -10,8 +10,8 @@
 
   <aura:registerEvent name="updateRecord" type="c:PropertyUpdateRecord" />
 
-  <aura:method name="resetRecord" action="{! c.executeResetRecord }" >
-  </aura:method>
+  <aura:method name="resetRecord" action="{! c.executeResetRecord }" />
+  <aura:method name="toggleLayer" action="{! c.executeToggleLayer }" />
 
   <p><strong>PropertyMap.cmp</strong></p>
   <p>resetRecord method called: {! v.DEBUG_resetRecordMethodCalled }</p>

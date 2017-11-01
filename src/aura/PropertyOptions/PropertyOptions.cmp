@@ -2,9 +2,14 @@
 
   <aura:attribute name="layers" type="Object[]" />
 
+  <aura:registerEvent name="toggleLayer" type="c:PropertyToggleLayer" />
+
   <lightning:buttonGroup>
     <aura:iteration items="{! v.layers}" var="layer" >
-      <lightning:button label="{! 'Label ' + item }" onclick="{! handleButtonClick }" />
+      <lightning:button
+        label="{! layer.name }"
+        onclick="{! c.handleToggleLayerClick }"
+        />
     </aura:iteration>
   </lightning:buttonGroup>
 

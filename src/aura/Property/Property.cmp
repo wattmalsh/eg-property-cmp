@@ -21,6 +21,7 @@
   <aura:handler name="updateRecord" event="c:PropertyUpdateRecord" action="{! c.handleUpdateRecord }" />
   <aura:handler name="saveRecord" event="c:PropertySaveRecord" action="{! c.handleSaveRecord }" />
   <aura:handler name="resetRecord" event="c:PropertyResetRecord" action="{! c.handleResetRecord }" />
+  <aura:handler name="toggleLayer" event="c:PropertyToggleLayer" action="{! c.handleToggleLayer }" />
 
   <force:recordData
     aura:id="forceRecord"

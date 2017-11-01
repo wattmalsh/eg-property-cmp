@@ -38,4 +38,14 @@
     helper.sendToVF(component, message);
   },
 
+  executeToggleLayer: function(component, event, helper) {
+    let message = {
+      name: "toggleLayer",
+      payload: {
+        layers: component.get("v.layers")
+      }
+    }
+    helper.sendToVF(component, message);
+  },
+
 })

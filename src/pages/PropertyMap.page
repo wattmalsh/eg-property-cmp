@@ -28,7 +28,8 @@
             mapOptions,
             marker,
             markerInfoWindow,
-            geocoder;
+            geocoder,
+            layerRefs = {};
 
         function sendToLC(message) {
           parent.postMessage(message, lexOrigin);
@@ -51,10 +52,6 @@
             record.Longitude = Number(record.Longitude);
             map.setCenter({ lat: record.Latitude, lng: record.Longitude});
             initMarker();
-            // handle layers
-            layers = data.payload.layers;
-            createLayerReferences(layers);
-            toggleLayers(layers);
           }
           if (data.name === "resetRecord") {
             document.getElementById("DEBUG_resetRecordData").innerHTML = JSON.stringify(data)
@@ -66,6 +63,10 @@
             let latLng = { lat: record.Latitude, lng: record.Longitude};
             map.setCenter(latLng);
             marker.setPosition(latLng)
+          }
+          if (data.name === "toggleLayer") {
+            layers = data.payload.layers;
+            toggleLayers();
           }
 
         }, false);
@@ -179,20 +180,27 @@
           });
         }
 
-        function createLayerReferences(layers) {
-          for ( let i=0; i<layers.length; i++ ) {
-            layers[i].ref = new google.maps.KmlLayer({
-              url: layers[i].url,
-              map: map,
-              preserveViewport: true,
-              suppressInfoWindows: true
-            });
-          }
+        function createLayerReference(layer, layerName) {
+          layerRefs[layerName] = new google.maps.KmlLayer({
+            url: layer.url,
+            map: map,
+            preserveViewport: true,
+            suppressInfoWindows: true
+          });
         }
 
-        function toggleLayers(layers) {
+        function toggleLayers() {
           for ( let i=0; i<layers.length; i++ ) {
-            layers[i].active ? layers[i].ref.setMap(map) : layers[i].ref.setMap(null);
+            let layerName = layers[i].name;
+            let display = layers[i].active;
+            let exists = layerName in layerRefs;
+            if ( display && !exists ) {
+              createLayerReference(layers[i], layerName);
+            } else if ( display && exists ) {
+              layerRefs[layerName].setMap(map);
+            } else if ( !display && exists ) {
+              layerRefs[layerName].setMap(null)
+            }
           }
         }
 
