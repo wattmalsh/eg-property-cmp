@@ -324,7 +324,7 @@
   </macrodef>
 
   <!-- TODO: -filterAllDeployDirs does not at this moment filter members, it only handles  the wildcard * -->
-  <!-- TODO: change deploy procedure to use symbolic links of desired directories into a "debploy_temp" directory -->
+  <!-- TODO: change deploy procedure to use symbolic links of desired directories into a "deploy_temp" directory in /tmp-->
   <!-- TODO: list files/directories to deploy in logs -->
   <macrodef name="deploy" >
     <attribute name="deployRoot" />
