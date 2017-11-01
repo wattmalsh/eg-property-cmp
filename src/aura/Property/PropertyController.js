@@ -27,13 +27,9 @@
         active: false,
       }
     ]);
-    component.set("v.DEBUG_layers", JSON.stringify(component.get("v.layers")));
   },
 
   handleUpdateRecord: function(component, event, helper) {
-    component.set("v.DEBUG_eventData", JSON.stringify(event.getParam("record")));
-    component.set("v.DEBUG_record", JSON.stringify(component.get("v.record")));
-    component.set("v.DEBUG_fullRecord", JSON.stringify(component.get("v.fullRecord")));
     component.set("v.record", event.getParam("record"));
     let simple = component.get("v.record");
     let full = component.get("v.fullRecord");
@@ -50,7 +46,6 @@
   },
 
   handleSaveRecord: function(component, event, helper) {
-    component.set("v.DEBUG_saveRecordEvent", "save record event received");
     component.find("forceRecord").saveRecord($A.getCallback(function(saveResult) {
       if (saveResult.state === "SUCCESS" || saveResult.state === "DRAFT") {
         component.set("v.markerInOriginalPos", true);
@@ -65,7 +60,6 @@
         //TODO: use UI message to show this
         console.log('Unknown problem, state: ' + saveResult.state + ', error: ' + JSON.stringify(saveResult.error));
       }
-      component.set("v.DEBUG_saveRecordResults", saveResult.state)
     }));
   },
 
@@ -86,7 +80,6 @@
   recordUpdated: function(component, event, helper) {
     let eventParams = event.getParams();
     let changeType = eventParams.changeType;
-    component.set("v.DEBUG_recordUpdatedChangeType", changeType)
     if (changeType === "ERROR") { /* handle error; do this first! */ }
     else if (changeType === "LOADED") {
       let record = component.get("v.record");
@@ -103,7 +96,6 @@
     else if (changeType === "REMOVED") { /* handle record removal */ }
     else if (changeType === "CHANGED") {
       let changedFields = eventParams.changedFields;
-      component.set("v.DEBUG_changedFields", JSON.stringify(changedFields));
       let propertyDetailsCmp = component.find("propertyDetailsCmp");
       propertyDetailsCmp.setOriginalRecord();
     }

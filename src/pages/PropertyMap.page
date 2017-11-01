@@ -8,7 +8,6 @@
       </style>
     </head>
     <body>
-      <p><b>record from markerReset method: </b><span id="DEBUG_resetRecordData">Nada</span></p>
       <div id="map"/>
       <script>
 
