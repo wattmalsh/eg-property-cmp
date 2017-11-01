@@ -133,12 +133,13 @@
             let latLng = marker.getPosition();
             record.Latitude = latLng.lat();
             record.Longitude = latLng.lng();
-            geocodeLatLng(latLng, record);
-            let message = {
-              name: "updateRecord",
-              record: record
-            };
-            sendToLC(message);
+            geocodeLatLng(latLng, record, function() {
+              let message = {
+                name: "updateRecord",
+                record: record
+              };
+              sendToLC(message);
+            });
           });
 
           marker.addListener('position_changed', function() {
@@ -157,7 +158,7 @@
         }
 
         // return the closest human-readable address from latLng
-        function geocodeLatLng(latLng, record) {
+        function geocodeLatLng(latLng, record, callback) {
           geocoder.geocode({ location: latLng }, function(results, status) {
             if ( status === 'OK' ) {
               address = results[0].formatted_address;
@@ -175,6 +176,7 @@
               record.PostalCode = 'null';
               record.Country = 'null';
             }
+            callback();
           });
         }
 
