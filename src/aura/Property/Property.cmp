@@ -5,6 +5,8 @@
   <aura:attribute name="layers" type="Object[]" />
   <aura:attribute name="address" type="String" />
   <aura:attribute name="record" type="Object" />
+  <aura:attribute name="originalAddress" type="String" />
+  <aura:attribute name="originalRecord" type="Object" />
   <aura:attribute name="fullRecord" type="Object" />
   <aura:attribute name="recordError" type="String" />
 
@@ -52,8 +54,10 @@
         <c:PropertyDetails
           aura:id="propertyDetailsCmp"
           markerInOriginalPos="{!v.markerInOriginalPos}"
-          address="{! v.address }"
           record="{! v.record }"
+          originalRecord="{! v.originalRecord }"
+          address="{! v.address }"
+          originalAddress="{! v.originalAddress }"
           />
       </lightning:layoutItem>
 

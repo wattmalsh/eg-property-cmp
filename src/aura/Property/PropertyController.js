@@ -41,8 +41,10 @@
   handleSaveRecord: function(component, event, helper) {
     component.find("forceRecord").saveRecord($A.getCallback(function(saveResult) {
       if (saveResult.state === "SUCCESS" || saveResult.state === "DRAFT") {
-        component.set("v.markerInOriginalPos", true);
         console.log("Save completed successfully.");
+        component.set("v.markerInOriginalPos", true);
+        let propertyDetailsCmp = component.find("propertyDetailsCmp");
+        propertyDetailsCmp.saveSuccessful();
       } else if (saveResult.state === "INCOMPLETE") {
         //TODO: use UI message to show this
         console.log("User is offline, device doesn't support drafts.");
@@ -80,11 +82,11 @@
       record.Latitude = record.Pinned_Coordinates__Latitude__s;
       record.Longitude = record.Pinned_Coordinates__Longitude__s;
       component.set("v.record", record);
+      component.set("v.originalRecord", record);
       // form address from fields
-      component.set("v.address", helper.getAddress(record));
-      // set the original record object in Property Details
-      let propertyDetailsCmp = component.find("propertyDetailsCmp");
-      propertyDetailsCmp.setOriginalRecord();
+      let address = helper.getAddress(record);
+      component.set("v.address", address);
+      component.set("v.originalAddress", address);
       // if triggered by c.handleResetRecord, call PropertyMap's resetRecord method
       if ( component.get("v.callResetRecordMethod") ) {
         let propertyMapCmp = component.find("propertyMapCmp");
@@ -93,11 +95,7 @@
       }
     }
     else if (changeType === "REMOVED") { /* handle record removal */ }
-    else if (changeType === "CHANGED") {
-      let changedFields = eventParams.changedFields;
-      let propertyDetailsCmp = component.find("propertyDetailsCmp");
-      propertyDetailsCmp.setOriginalRecord();
-    }
+    else if (changeType === "CHANGED") { }
   },
 
 })

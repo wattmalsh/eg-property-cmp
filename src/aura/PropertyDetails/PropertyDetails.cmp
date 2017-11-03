@@ -1,22 +1,35 @@
-<aura:component>
+<aura:component >
 
   <aura:attribute name="address" type="String" />
   <aura:attribute name="record" type="Object" />
   <aura:attribute name="originalAddress" type="String" />
   <aura:attribute name="originalRecord" type="Object" />
   <aura:attribute name="markerInOriginalPos" type="Boolean" />
+  <aura:attribute name="saveRecordBtnName" type="String" default="Save Record" />
 
   <aura:registerEvent name="saveRecord" type="c:PropertySaveRecord" />
   <aura:registerEvent name="resetRecord" type="c:PropertyResetRecord" />
 
-  <aura:method name="setOriginalRecord" action="{! c.executeSetOriginalRecord }" />
+  <aura:method name="saveSuccessful" action="{! c.executeSaveSuccessful }" />
 
   <lightning:card>
     <aura:set attribute="title" >
       {! v.record.Name }
     </aura:set>
     <aura:set attribute="actions" >
-      <lightning:button label="Save Record" onclick="{! c.handleSaveRecordClick }" disabled="{! v.markerInOriginalPos?'true':'' }"/>
+      <lightning:button
+        label="{! v.saveRecordBtnName }"
+        onclick="{! c.handleSaveRecordClick }"
+        disabled="{! v.markerInOriginalPos?'true':'' }"
+        />
+      <div class="saveRecordSpinner">
+        <lightning:spinner
+          aura:id="spinner"
+          variant="brand"
+          size="small"
+          class="slds-hide"
+          />
+      </div>
     </aura:set>
     <!-- body -->
     <lightning:layout verticalAlign="center" horizontalAlign="space" >
