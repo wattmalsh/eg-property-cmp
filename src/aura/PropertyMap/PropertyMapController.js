@@ -4,13 +4,13 @@
     component.set("v.lcHost", window.location.hostname);
     component.set("v.vfHost", window.location.hostname.split(".")[0]);
 
-    window.addEventListener("message", function(event) {
-      if ( !event.origin.match("https://" + component.get("v.vfHost")) ) {
+    window.addEventListener("message", function(e) {
+      if ( !e.origin.match("https://" + component.get("v.vfHost")) ) {
         // Not the expected origin: reject message
         return;
       }
       // Only handle messages we are interested in
-      if (event.data === "init") {
+      if (e.data === "init") {
         let message = {
           name: "initResponse",
           payload: {
@@ -19,12 +19,12 @@
             layers: component.get("v.layers")
           }
         }
-        component.set("v.vfHost", event.origin.split("://")[1]);
+        component.set("v.vfHost", e.origin.split("://")[1]);
         helper.sendToVF(component, message);
       }
-      if ( event.data.name === "updateRecord" ) {
+      if ( e.data.name === "updateRecord" ) {
         let params = {
-          record: event.data.record,
+          record: e.data.record,
         };
         helper.sendToParent(component, params);
       }
