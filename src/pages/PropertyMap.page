@@ -158,13 +158,24 @@
         function geocodeLatLng(latLng, record, callback) {
           geocoder.geocode({ location: latLng }, function(results, status) {
             if ( status === 'OK' ) {
-              address = results[0].formatted_address;
-              let split = address.split(/,/);
-              record.Street = split[0];
-              record.City = split[1];
-              record.State = split[2].split(/ /)[1];
-              record.PostalCode = split[2].split(/ /)[2];
-              record.Country = split[3];
+              let num, street;
+              address = results[0].address_components;
+              address.forEach((comp) => {
+                let type = comp.types[0];
+                if (type === "street_number") { num = comp.long_name; }
+                if (type === "route") { street = comp.long_name; }
+                if (type === "locality") { record.City = comp.long_name; }
+                if (type === "administrative_area_level_1") { record.State = comp.long_name; }
+                if (type === "postal_code") { record.PostalCode = comp.long_name; }
+                if (type === "country") { record.Country = comp.long_name; }
+              });
+              if (typeof num === 'undefined' && typeof street === 'undefined') {
+                record.Street = '(no street address)';
+              } else if ( typeof num === 'undefined') {
+                record.Street = street;
+              } else {
+                record.Street = `${num} ${street}`;
+              }
             } else {
               address = 'Geocoder failed due to: ' + status;
               record.Street = 'null';
