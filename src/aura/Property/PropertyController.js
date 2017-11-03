@@ -14,6 +14,13 @@
     component.set("v.layers", layers);
   },
 
+  handleResetRecord: function(component, event, helper) {
+    // calling the resetRecord method directly after reloadRecord invokes the method before the record has been reset.
+    component.set("v.markerInOriginalPos", true);
+    component.set("v.callResetRecordMethod", "true");
+    component.find("forceRecord").reloadRecord();
+  },
+
   handleUpdateRecord: function(component, event, helper) {
     component.set("v.record", event.getParam("record"));
     let simple = component.get("v.record");
@@ -23,11 +30,12 @@
     full.fields.State.value = simple.State;
     full.fields.PostalCode.value = simple.PostalCode;
     full.fields.Country.value = simple.Country;
-    full.fields.Latitude.value = simple.Latitude;
-    full.fields.Longitude.value = simple.Longitude;
+    full.fields.Pinned_Coordinates__Latitude__s.value = simple.Latitude;
+    full.fields.Pinned_Coordinates__Longitude__s.value = simple.Longitude;
+    full.fields.Pinned__c.value = true;
     component.set("v.fullRecord", full)
     component.set("v.markerInOriginalPos", false);
-    component.set("v.address", helper.getAddress(component));
+    component.set("v.address", helper.getAddress(simple));
   },
 
   handleSaveRecord: function(component, event, helper) {
@@ -67,11 +75,17 @@
     let changeType = eventParams.changeType;
     if (changeType === "ERROR") { /* handle error; do this first! */ }
     else if (changeType === "LOADED") {
-      let record = component.get("v.record");
-      component.set("v.address", helper.getAddress(component));
+      // set the latLng values in record to shorter form
+      let record = Object.assign({}, component.get("v.record"));
+      record.Latitude = record.Pinned_Coordinates__Latitude__s;
+      record.Longitude = record.Pinned_Coordinates__Longitude__s;
+      component.set("v.record", record);
+      // form address from fields
+      component.set("v.address", helper.getAddress(record));
+      // set the original record object in Property Details
       let propertyDetailsCmp = component.find("propertyDetailsCmp");
       propertyDetailsCmp.setOriginalRecord();
-      // if triggered by c.handleResetRecord
+      // if triggered by c.handleResetRecord, call PropertyMap's resetRecord method
       if ( component.get("v.callResetRecordMethod") ) {
         let propertyMapCmp = component.find("propertyMapCmp");
         propertyMapCmp.resetRecord();
@@ -84,13 +98,6 @@
       let propertyDetailsCmp = component.find("propertyDetailsCmp");
       propertyDetailsCmp.setOriginalRecord();
     }
-  },
-
-  handleResetRecord: function(component, event, helper) {
-    // calling the resetRecord method directly after reloadRecord invokes the method before the record has been reset.
-    component.set("v.markerInOriginalPos", true);
-    component.set("v.callResetRecordMethod", "true");
-    component.find("forceRecord").reloadRecord();
   },
 
 })

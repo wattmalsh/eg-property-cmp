@@ -21,7 +21,7 @@
   <force:recordData
     aura:id="forceRecord"
     recordId="{! v.recordId }"
-    fields="Name,Street,City,State,Country,PostalCode,Latitude,Longitude"
+    fields="Name,Street,City,State,Country,PostalCode,Pinned__c,Pinned_Coordinates__Latitude__s,Pinned_Coordinates__Longitude__s"
     targetError="{! v.recordError }"
     targetRecord="{! v.fullRecord }"
     targetFields="{! v.record }"
