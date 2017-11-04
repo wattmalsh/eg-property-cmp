@@ -1,20 +1,21 @@
 ({
 
   executeSaveSuccessful: function(component, event, helper) {
-    // notify user of update
     // v.saveRecordBtnName value change is required to force a rerender to update the framework digest cycle
     let spinner = component.find("spinner");
+    let successText = component.find("successText");
     $A.util.addClass(spinner, "slds-hide");
+    $A.util.addClass(successText, "fade-in-out");
     component.set("v.saveRecordBtnName", "Save Record");
   },
 
   handleSaveRecordClick: function(component, event, helper) {
     // v.saveRecordBtnName value change is required to force a rerender to update the framework digest cycle
     let spinner = component.find("spinner");
-    $A.util.addClass(spinner, "slds-hide");
-    // required to force a rerender to update the framework digest cycle
-    component.set("v.saveRecordBtnName", "Pending...");
+    let successText = component.find("successText");
+    $A.util.removeClass(successText, "fade-in-out");
     $A.util.removeClass(spinner, "slds-hide");
+    component.set("v.saveRecordBtnName", "Pending...");
     let compEvent = component.getEvent("saveRecord");
     compEvent.fire();
   },

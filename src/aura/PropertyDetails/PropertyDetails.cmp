@@ -30,6 +30,12 @@
           class="slds-hide"
           />
       </div>
+      <div
+        aura:id="successText"
+        class="success-text slds-align_absolute-center"
+        >
+        <p>Success!</p>
+      </div>
     </aura:set>
     <!-- body -->
     <lightning:layout verticalAlign="center" horizontalAlign="space" >

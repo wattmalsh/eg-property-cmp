@@ -1,0 +1,22 @@
+.THIS .success-text {
+  color: #04844b;
+  opacity: 0;
+}
+
+.THIS .fade-in-out {
+  -webkit-animation: 1s ease-out 2 alternate fade-in-out;
+          animation: 1s ease-out 2 alternate fade-in-out;
+}
+
+@-webkit-keyframes fade-in-out {
+  0% { opacity: 0; }
+  25% { opacity: 0.9; }
+  50% { opacity: 1; }
+  100% { opacity: 1; }
+}
+@keyframes fade-in-out {
+  0% { opacity: 0; }
+  25% { opacity: 0.9; }
+  50% { opacity: 1; }
+  100% { opacity: 1; }
+}
