@@ -104,7 +104,6 @@
             position: { lat: record.Latitude, lng: record.Longitude},
             map: map,
             draggable: true,
-            title: record.Name
           });
 
           markerInfoWindow = new google.maps.InfoWindow({
@@ -114,11 +113,6 @@
             <p>${record.Name}</p>
             <p>${address}</p>
             </div>`
-          });
-
-          // marker and markerInfoWindow event listeners
-          marker.addListener('click', function() {
-            markerInfoWindow.open(map, marker);
           });
 
           marker.addListener('dragstart', function() {
