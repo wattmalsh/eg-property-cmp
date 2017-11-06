@@ -25,23 +25,24 @@
     component.set("v.record", event.getParam("record"));
     let simple = component.get("v.record");
     let full = component.get("v.fullRecord");
-    full.fields.Street.value = simple.Street;
-    full.fields.City.value = simple.City;
-    full.fields.State.value = simple.State;
-    full.fields.PostalCode.value = simple.PostalCode;
-    full.fields.Country.value = simple.Country;
     full.fields.Pinned_Coordinates__Latitude__s.value = simple.Latitude;
     full.fields.Pinned_Coordinates__Longitude__s.value = simple.Longitude;
     full.fields.Pinned__c.value = true;
     component.set("v.fullRecord", full)
     component.set("v.markerInOriginalPos", false);
-    component.set("v.address", helper.getAddress(simple));
+    component.set("v.closestMatchingAddress", helper.getAddress(simple));
   },
 
   handleSaveRecord: function(component, event, helper) {
     component.find("forceRecord").saveRecord($A.getCallback(function(saveResult) {
       if (saveResult.state === "SUCCESS" || saveResult.state === "DRAFT") {
         console.log("Save completed successfully.");
+        // update originalRecord latLng
+        let record = component.get("v.record");
+        let originalRecord = Object.assign({}, component.get("v.record"));
+        originalRecord.Latitude = record.Latitude;
+        originalRecord.Longitude = record.Longitude;
+        component.set("v.originalRecord", record);
         component.set("v.markerInOriginalPos", true);
         let propertyDetailsCmp = component.find("propertyDetailsCmp");
         propertyDetailsCmp.saveSuccessful();
@@ -85,8 +86,8 @@
       component.set("v.originalRecord", record);
       // form address from fields
       let address = helper.getAddress(record);
+      component.set("v.closestMatchingAddress", address);
       component.set("v.address", address);
-      component.set("v.originalAddress", address);
       // if triggered by c.handleResetRecord, call PropertyMap's resetRecord method
       if ( component.get("v.callResetRecordMethod") ) {
         let propertyMapCmp = component.find("propertyMapCmp");

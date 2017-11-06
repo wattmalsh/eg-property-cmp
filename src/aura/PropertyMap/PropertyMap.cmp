@@ -2,7 +2,7 @@
 
   <aura:attribute name="vfHost" type="String" />
   <aura:attribute name="lcHost" type="String" />
-  <aura:attribute name="address" type="String" />
+  <aura:attribute name="closestMatchingAddress" type="String" />
   <aura:attribute name="record" type="Object" />
   <aura:attribute name="layers" type="Object[]" />
 

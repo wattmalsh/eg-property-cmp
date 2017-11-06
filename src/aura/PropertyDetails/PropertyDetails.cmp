@@ -1,8 +1,8 @@
 <aura:component >
 
   <aura:attribute name="address" type="String" />
+  <aura:attribute name="closestMatchingAddress" type="String" />
   <aura:attribute name="record" type="Object" />
-  <aura:attribute name="originalAddress" type="String" />
   <aura:attribute name="originalRecord" type="Object" />
   <aura:attribute name="markerInOriginalPos" type="Boolean" />
   <aura:attribute name="saveRecordBtnName" type="String" default="Save Record" />
@@ -45,7 +45,7 @@
           <p><strong>lat: </strong>{! v.originalRecord.Latitude }</p>
           <p><strong>lng: </strong>{! v.originalRecord.Longitude }</p>
           <p><strong>Address:</strong></p>
-          <p>{! v.originalAddress }</p>
+          <p>{! v.address }</p>
         </lightning:tile>
       </lightning:layoutItem>
       <lightning:layoutItem>
@@ -53,7 +53,7 @@
           <p><strong>lat: </strong>{! v.record.Latitude }</p>
           <p><strong>lng: </strong>{! v.record.Longitude }</p>
           <p><strong>Closest matching address:</strong></p>
-          <p>{! v.address }</p>
+          <p>{! v.closestMatchingAddress }</p>
         </lightning:tile>
       </lightning:layoutItem>
     </lightning:layout>

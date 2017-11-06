@@ -15,7 +15,7 @@
           name: "initResponse",
           payload: {
             record: component.get("v.record"),
-            address: component.get("v.address"),
+            address: component.get("v.closestMatchingAddress"),
             layers: component.get("v.layers")
           }
         }

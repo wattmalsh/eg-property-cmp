@@ -3,9 +3,9 @@
   <aura:attribute name="markerInOriginalPos" type="Boolean" default="true" />
   <aura:attribute name="callResetRecordMethod" type="Boolean" default="false" />
   <aura:attribute name="layers" type="Object[]" />
-  <aura:attribute name="address" type="String" />
+  <aura:attribute name="closestMatchingAddress" type="String" />
   <aura:attribute name="record" type="Object" />
-  <aura:attribute name="originalAddress" type="String" />
+  <aura:attribute name="address" type="String" />
   <aura:attribute name="originalRecord" type="Object" />
   <aura:attribute name="fullRecord" type="Object" />
   <aura:attribute name="recordError" type="String" />
@@ -38,7 +38,7 @@
       <lightning:layoutItem size="12" >
         <c:PropertyMap
           aura:id="propertyMapCmp"
-          address="{! v.address }"
+          closestMatchingAddress="{! v.closestMatchingAddress }"
           record="{! v.record }"
           layers="{! v.layers }"
           />
@@ -56,8 +56,8 @@
           markerInOriginalPos="{!v.markerInOriginalPos}"
           record="{! v.record }"
           originalRecord="{! v.originalRecord }"
+          closestMatchingAddress="{! v.closestMatchingAddress }"
           address="{! v.address }"
-          originalAddress="{! v.originalAddress }"
           />
       </lightning:layoutItem>
 
