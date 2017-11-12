@@ -46,10 +46,14 @@
             address = data.payload.address;
             // handle lead record
             record = data.payload.record;
-            record.Latitude = Number(record.Latitude);
-            record.Longitude = Number(record.Longitude);
-            map.setCenter({ lat: record.Latitude, lng: record.Longitude});
-            initMarker();
+            if ( record.Latitude === null || record.Longitude === null ) {
+              // find latlng from address
+              geocodeAddress(address, record, function() {
+                initMarker();
+              });
+            } else {
+              initMarker();
+            }
           }
           if (data.name === "resetRecord") {
             address = data.payload.address;
@@ -99,6 +103,11 @@
         }
 
         function initMarker() {
+
+          record.Latitude = Number(record.Latitude);
+          record.Longitude = Number(record.Longitude);
+
+          map.setCenter({ lat: record.Latitude, lng: record.Longitude });
 
           marker = new google.maps.Marker({
             position: { lat: record.Latitude, lng: record.Longitude},
@@ -177,6 +186,19 @@
               record.State = 'null'
               record.PostalCode = 'null';
               record.Country = 'null';
+            }
+            callback();
+          });
+        }
+
+        function geocodeAddress(address, record, callback) {
+          geocoder.geocode({ address: address }, function(results, status) {
+            if ( status === 'OK' ) {
+              const latLng = results[0].geometry.location;
+              record.Latitude = latLng.lat();
+              record.Longitude = latLng.lng();
+            } else {
+              console.log('Geocode address error')
             }
             callback();
           });

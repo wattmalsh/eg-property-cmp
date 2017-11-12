@@ -42,8 +42,8 @@
       <lightning:layoutItem>
 
         <lightning:tile class="{! v.markerInOriginalPos?'':'slds-text-color_weak' }" >
-          <p><strong>lat: </strong>{! v.originalRecord.Latitude }</p>
-          <p><strong>lng: </strong>{! v.originalRecord.Longitude }</p>
+          <p><strong>lat: </strong>{! v.originalRecord.Latitude==undefined?'null':v.originalRecord.Latitude }</p>
+          <p><strong>lng: </strong>{! v.originalRecord.Longitude==undefined?'null':v.originalRecord.Longitude }</p>
           <p><strong>Address:</strong></p>
           <p>{! v.address }</p>
         </lightning:tile>

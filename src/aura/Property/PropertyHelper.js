@@ -1,8 +1,11 @@
 ({
 
   getAddress: function(record) {
-    let address = `${record.Street}, ${record.City}, ${record.State} ${record.PostalCode}, ${record.Country}`;
-    return address;
+    if ( record.Street === null ) {
+      return 'null'
+    } else {
+      return `${record.Street}, ${record.City}, ${record.State} ${record.PostalCode}, ${record.Country}`;
+    }
   },
 
 })
