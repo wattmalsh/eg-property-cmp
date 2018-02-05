@@ -229,7 +229,7 @@
         }
 
       </script>
-      <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBSlN5huj7fFxFreZkvr6HoWepUgzBcP9g&callback=initMap">
+      <script src="https://maps.googleapis.com/maps/api/js?key=INSERT_KEY&callback=initMap">
       </script>
     </body>
   </html>
